@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:linktr.ee)"
+      "WebFetch(domain:linktr.ee)",
+      "WebFetch(domain:realnmae.github.io)",
+      "Bash(sips *)"
     ]
   }
 }
