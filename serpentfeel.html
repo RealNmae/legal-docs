@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SerpentFeel — Wake the Serpent</title>
+  <style>
+    :root {
+      --bg:          #0A0A0A;
+      --surface:     #121212;
+      --border:      #1A1A1A;
+      --green:       #00FF95;
+      --cyan:        #00F0FF;
+      --lime:        #39FF14;
+      --white:       #FFFFFF;
+      --muted:       rgba(255,255,255,0.5);
+      --glass-bg:    rgba(18,18,18,0.7);
+      --glass-border:rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: ui-monospace, "SF Mono", "Fira Code", Menlo, monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px 120px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Animated radial glow background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(ellipse at center,
+        rgba(0,240,255,0.10) 0%,
+        rgba(0,255,149,0.06) 35%,
+        transparent 70%);
+      animation: pulse-glow 6s ease-in-out infinite;
+      border-radius: 50%;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%);
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(ellipse at center,
+        rgba(0,255,149,0.08) 0%,
+        transparent 70%);
+      animation: pulse-glow 4s ease-in-out infinite reverse;
+      border-radius: 50%;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; transform: translate(-50%, -60%) scale(1); }
+      50%       { opacity: 0.6; transform: translate(-50%, -60%) scale(1.12); }
+    }
+
+    /* Floating grid lines */
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(to right, var(--cyan) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--cyan) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: grid-drift 20s linear infinite;
+    }
+    @keyframes grid-drift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    /* Floating icon */
+    .icon-wrap {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      animation: float 5s ease-in-out infinite;
+    }
+    .icon-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center,
+        rgba(0,240,255,0.25) 0%,
+        transparent 70%);
+      animation: icon-glow 3s ease-in-out infinite;
+    }
+    .icon-wrap img {
+      width: 140px;
+      height: 140px;
+      border-radius: 32px;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-14px); }
+    }
+    @keyframes icon-glow {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.1); }
+    }
+
+    /* Wordmark */
+    .wordmark-wrap {
+      position: relative;
+      overflow: hidden;
+      padding: 6px 0;
+    }
+    /* Scan-line sweep */
+    .wordmark-wrap::after {
+      content: '';
+      position: absolute;
+      left: -5%;
+      width: 110%;
+      height: 2px;
+      background: linear-gradient(to right,
+        transparent 0%,
+        rgba(0,240,255,0.55) 40%,
+        rgba(0,255,149,0.35) 60%,
+        transparent 100%);
+      animation: scan-sweep 6s linear infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+    @keyframes scan-sweep {
+      0%   { top: -4px; opacity: 0; }
+      5%   { opacity: 1; }
+      95%  { opacity: 1; }
+      100% { top: calc(100% + 4px); opacity: 0; }
+    }
+
+    .wordmark {
+      position: relative;
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      line-height: 1;
+      color: rgba(195, 218, 228, 0.85);
+      -webkit-text-stroke: 1px rgba(20, 100, 130, 0.22);
+      text-shadow:
+        0 0  6px rgba(15, 90, 110, 0.35),
+        0 0 28px rgba(10, 65,  80, 0.15),
+        0 2px  8px rgba(0,  0,   0, 0.90);
+      animation: color-drift 18s ease-in-out infinite;
+    }
+    @keyframes color-drift {
+      0%,  100% { color: rgba(195,218,228,0.85); text-shadow: 0 0 6px rgba(15,90,110,0.35), 0 0 28px rgba(10,65,80,0.15), 0 2px 8px rgba(0,0,0,.9); }
+      /* brief cold-blue shift */
+      28%        { color: rgba(165,200,230,0.80); text-shadow: 0 0 8px rgba(20,70,140,0.40), 0 0 32px rgba(10,45,100,0.18), 0 2px 8px rgba(0,0,0,.9); }
+      30%        { color: rgba(195,218,228,0.85); text-shadow: 0 0 6px rgba(15,90,110,0.35), 0 0 28px rgba(10,65,80,0.15), 0 2px 8px rgba(0,0,0,.9); }
+      /* brief warm-teal shift */
+      65%        { color: rgba(180,225,210,0.82); text-shadow: 0 0 8px rgba(10,100,80,0.40), 0 0 32px rgba(8,70,55,0.18),  0 2px 8px rgba(0,0,0,.9); }
+      67%        { color: rgba(195,218,228,0.85); text-shadow: 0 0 6px rgba(15,90,110,0.35), 0 0 28px rgba(10,65,80,0.15), 0 2px 8px rgba(0,0,0,.9); }
+    }
+
+    /* Chromatic aberration — steel-blue top half */
+    .wordmark::before {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      color: #3a88b8;
+      opacity: 0.38;
+      transform: translate(-3px, 0);
+      clip-path: inset(0 0 52% 0);
+      animation: glitch-top 7s cubic-bezier(.25,.1,.25,1) infinite;
+      pointer-events: none;
+    }
+    /* Chromatic aberration — deep-teal bottom half */
+    .wordmark::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      color: #2a7868;
+      opacity: 0.28;
+      transform: translate(3px, 0);
+      clip-path: inset(52% 0 0 0);
+      animation: glitch-bot 7s cubic-bezier(.25,.1,.25,1) infinite;
+      pointer-events: none;
+    }
+    @keyframes glitch-top {
+      0%, 82%, 100% { transform: translate(-3px, 0); opacity: 0.38; clip-path: inset(0 0 52% 0); }
+      84% { transform: translate( 6px,-2px); opacity: 0.58; clip-path: inset(8%  0 40% 0); }
+      86% { transform: translate(-2px, 0);  opacity: 0.22; clip-path: inset(0   0 56% 0); }
+      88% { transform: translate( 5px, 1px); opacity: 0.48; clip-path: inset(4%  0 50% 0); }
+      90% { transform: translate(-3px, 0);  opacity: 0.38; clip-path: inset(0   0 52% 0); }
+    }
+    @keyframes glitch-bot {
+      0%, 82%, 100% { transform: translate( 3px, 0); opacity: 0.28; clip-path: inset(52% 0 0 0); }
+      84% { transform: translate(-5px, 2px); opacity: 0.42; clip-path: inset(44% 0 6% 0); }
+      86% { transform: translate( 2px, 0);  opacity: 0.16; clip-path: inset(50% 0 0   0); }
+      88% { transform: translate(-6px,-1px); opacity: 0.35; clip-path: inset(46% 0 4% 0); }
+      90% { transform: translate( 3px, 0);  opacity: 0.28; clip-path: inset(52% 0 0   0); }
+    }
+
+    .tagline {
+      font-size: clamp(0.95rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .badge {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      padding: 6px 14px;
+      border: 1px solid var(--glass-border);
+      border-radius: 2px;
+      color: var(--muted);
+      background: var(--glass-bg);
+    }
+    .badge.active {
+      border-color: var(--green);
+      color: var(--green);
+      box-shadow: 0 0 12px rgba(0,255,149,0.2);
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 16px 40px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      color: var(--bg);
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      border-radius: 2px;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+    .cta-btn:hover {
+      box-shadow: 0 0 30px rgba(0,255,149,0.4), 0 0 60px rgba(0,240,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ── SCROLL INDICATOR ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      animation: fade-bob 2s ease-in-out infinite;
+    }
+    .scroll-hint svg { width: 18px; opacity: 0.5; }
+    @keyframes fade-bob {
+      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+      50%       { opacity: 0.8; transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 100px 24px;
+    }
+    section + section { padding-top: 0; }
+
+    .label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+    h2 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .section-body {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    /* ── MANIFESTO ── */
+    .manifesto {
+      max-width: 860px;
+    }
+    .manifesto-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-left: 3px solid var(--cyan);
+      border-radius: 4px;
+      padding: 40px 36px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .manifesto-card blockquote {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      line-height: 1.9;
+      color: rgba(255,255,255,0.75);
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+    .manifesto-card cite {
+      display: block;
+      margin-top: 20px;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--cyan);
+      font-style: normal;
+    }
+
+    /* ── WAVEFORM ANIMATION ── */
+    .wave-section {
+      text-align: center;
+    }
+    .wave-canvas {
+      width: 100%;
+      height: 180px;
+      margin: 40px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .wave-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      height: 100%;
+    }
+    .bar {
+      width: 6px;
+      border-radius: 3px 3px 0 0;
+      animation: bar-dance var(--dur, 1s) ease-in-out infinite alternate;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes bar-dance {
+      0%   { height: 8%;  opacity: 0.3; }
+      100% { height: var(--peak, 60%); opacity: 1; }
+    }
+
+    /* 40 bars with varying colors and timings — set inline via style attrs */
+
+    .wave-caption {
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* Ripple rings */
+    .ripple-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+    }
+    .ripple-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid var(--cyan);
+      animation: ripple-out var(--rdur, 3s) ease-out infinite;
+      animation-delay: var(--rdelay, 0s);
+      opacity: 0;
+    }
+    @keyframes ripple-out {
+      0%   { transform: scale(0.1); opacity: 0.8; }
+      100% { transform: scale(1);   opacity: 0; }
+    }
+
+    /* ── SYNTHESIS CARDS GRID ── */
+    .synth-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .synth-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 4px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+    .synth-card:hover {
+      transform: translateY(-3px);
+    }
+    .synth-card.accent-cyan  { --card-accent: var(--cyan);  }
+    .synth-card.accent-green { --card-accent: var(--green); }
+    .synth-card.accent-white { --card-accent: rgba(255,255,255,0.6); }
+    .synth-card:hover {
+      border-color: var(--card-accent, var(--cyan));
+      box-shadow: 0 0 24px rgba(0,240,255,0.08);
+    }
+    .card-id {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--card-accent, var(--cyan));
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .card-desc {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 40px;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--green), var(--cyan), transparent);
+      opacity: 0.3;
+    }
+    .step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 24px 0;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--green);
+      background: var(--bg);
+      box-shadow: 0 0 16px rgba(0,255,149,0.15);
+      position: relative;
+      z-index: 1;
+    }
+    .step-body h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .step-body p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 24px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 24px 80px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-serpent {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .footer-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .footer-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid rgba(0,240,255,0.3);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .footer-link:hover {
+      color: var(--green);
+      border-color: var(--green);
+    }
+    .footer-note {
+      margin-top: 32px;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.12em;
+    }
+
+    /* ── SYSTEM NOTE ── */
+    .system-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 16px 20px;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.6;
+      margin-top: 60px;
+    }
+    .system-note span { color: var(--green); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .hero { padding: 60px 16px 100px; }
+      section { padding: 60px 16px; }
+      .manifesto-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-lines"></div>
+
+  <div class="hero-content">
+    <div class="icon-wrap">
+      <img src="assets/SerpentFeelIcon.png" alt="SerpentFeel App Icon" />
+    </div>
+
+    <div class="wordmark-wrap">
+      <div class="wordmark" data-text="SERPENTFEEL">SERPENTFEEL</div>
+    </div>
+
+    <p class="tagline">
+      Hold it in your hands. Tilt. Listen.<br/>
+      Your body becomes the instrument.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge active">SYSTEM ACTIVE</span>
+      <span class="badge">iOS 18+</span>
+      <span class="badge">NO ACCOUNT</span>
+      <span class="badge">MIDI + DAW READY</span>
+    </div>
+
+    <a href="https://apps.apple.com/us/app/serpentfeel/id6760789879" class="cta-btn" target="_blank" rel="noopener">WAKE THE SERPENT</a>
+  </div>
+
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+    SCROLL
+  </div>
+</header>
+
+<!-- ═══ MANIFESTO ═══ -->
+<section class="manifesto">
+  <p class="label">// SIGNAL_ORIGIN</p>
+  <div class="manifesto-card">
+    <blockquote>
+      Sound is not something you make — it's something you release.<br/><br/>
+      Every tilt carries intention. Every shift in weight becomes a waveform.<br/>
+      The device in your hand has always been alive with motion;<br/>
+      SerpentFeel is the first time it can speak.
+    </blockquote>
+    <cite>— NEURO-SERPENT_ENGINE / SYSTEM_SCHEMATICS_V1.0</cite>
+  </div>
+</section>
+
+<!-- ═══ MECHANIC / WAVEFORM ANIMATION ═══ -->
+<section class="wave-section">
+  <p class="label">// SYNTHESIS_CORE</p>
+  <h2>SIX LAYERS.<br/>ONE LIVING SOUND.</h2>
+  <p class="section-body">
+    Six synthesis engines fire simultaneously, sculpted in real time by your motion.
+    Tilt the device forward — the filter opens. Shake harder — the FM modulator bites.
+    Stay still — the wobble LFO breathes on its own, never fully asleep.
+  </p>
+
+  <!-- Frequency bars -->
+  <div class="wave-canvas">
+    <div class="wave-bars" id="bars"></div>
+  </div>
+  <p class="wave-caption">// REAL-TIME SYNTHESIS — 44,100 Hz — KINETIC MAPPED</p>
+
+  <!-- Synth engine cards -->
+  <div class="synth-grid">
+    <div class="synth-card accent-cyan">
+      <div class="card-id">01_THE_REESE</div>
+      <div class="card-title">DETUNED OSCILLATORS</div>
+      <p class="card-desc">Three independent oscillators drift at slightly different speeds, creating a 'beating' texture that feels alive and breathing.</p>
+    </div>
+    <div class="synth-card accent-green">
+      <div class="card-id">02_FM_SYNTHESIS</div>
+      <div class="card-title">FREQUENCY MODULATION</div>
+      <p class="card-desc">Metallic, aggressive grit created by high-speed wave vibration, generating complex overtones and electrical textures.</p>
+    </div>
+    <div class="synth-card accent-cyan">
+      <div class="card-id">03_RESONANT_SVF</div>
+      <div class="card-title">NEURO FILTER</div>
+      <p class="card-desc">Mathematical model of vintage analog filters. High resonance and drive produce the characteristic neuro growl.</p>
+    </div>
+    <div class="synth-card accent-white">
+      <div class="card-id">04_WOBBLE_LFO</div>
+      <div class="card-title">AUTONOMOUS PULSE</div>
+      <p class="card-desc">Autonomous filter sweeps at 1.5 Hz, defining the rhythmic pulse and 'movement' of the sound.</p>
+    </div>
+    <div class="synth-card accent-white">
+      <div class="card-id">05_SUB_BYPASS</div>
+      <div class="card-title">SUB OSCILLATOR</div>
+      <p class="card-desc">Clean sub-oscillator bypasses all processing to ensure structural integrity and physical impact.</p>
+    </div>
+    <div class="synth-card accent-green">
+      <div class="card-id">06_GRANULAR_SCALES</div>
+      <div class="card-title">GRANULAR TEXTURE</div>
+      <p class="card-desc">Sound atomization into 50 ms grains, scattered to create ghostly atmospheric clouds and textures.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section>
+  <p class="label">// NEURAL_LINK — KINETIC</p>
+  <h2>HOW IT WORKS</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>HOLD THE DEVICE</h3>
+        <p>Launch SerpentFeel and press WAKE THE SERPENT. The synthesis engine initialises — six layers spinning up in silence, waiting for motion.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>MOVE TO SHAPE SOUND</h3>
+        <p>Tilt forward and back to sweep the filter. Shake to push FM modulation. The accelerometer feeds directly into the synthesis core — your motion is the parameter.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>ADD MIDI — OR DON'T</h3>
+        <p>Pair a Bluetooth MIDI keyboard or connect via USB to route notes in. MIDI velocity controls dynamics; tilt still controls the texture. Motion and notes, woven together.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>SEND TO YOUR DAW</h3>
+        <p>Virtual MIDI output routes directly into Logic Pro, Ableton, or any audio workstation. Record the performance. Replay the motion.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>FEEL THE SIGNAL</h3>
+        <p>Haptic feedback synchronises with sound intensity — Thrum, Kinetic, or Heart mode. The device breathes with the sound in your hands.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="system-note">
+    <span>SYSTEM_NOTE:</span> Growl synthesis mimics complex analog circuit behavior and physical entropy through mathematical modulation.
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <!-- Ripple animation -->
+  <div class="ripple-wrap">
+    <div class="ripple-ring" style="--rdur:3s; --rdelay:0s;"></div>
+    <div class="ripple-ring" style="--rdur:3s; --rdelay:1s;"></div>
+    <div class="ripple-ring" style="--rdur:3s; --rdelay:2s;"></div>
+  </div>
+
+  <div class="footer-serpent">SERPENTFEEL</div>
+  <div class="footer-sub">NEURO-SERPENT_ENGINE / SYSTEM_SCHEMATICS_V1.0</div>
+  <a href="https://apps.apple.com/us/app/serpentfeel/id6760789879" class="footer-link" target="_blank" rel="noopener">VIEW ON APP STORE →</a>
+  <p class="footer-note">Made by Dmitriy Kegeles &nbsp;·&nbsp; iOS 18+ &nbsp;·&nbsp; No accounts needed</p>
+</footer>
+
+<script>
+  // Generate frequency bars
+  const barsEl = document.getElementById('bars');
+  const N = 48;
+  const peaks = [
+    8,12,18,28,40,55,70,80,88,90,85,78,72,68,65,70,75,80,72,60,
+    50,45,55,65,72,68,60,50,42,38,45,55,60,52,44,38,32,28,24,20,
+    16,14,12,10,8,6,5,4
+  ];
+
+  for (let i = 0; i < N; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    const peak = peaks[i] || 10;
+    const dur = (0.6 + Math.random() * 0.8).toFixed(2);
+    const delay = (Math.random() * 1.2).toFixed(2);
+
+    // Color: gradient from cyan on the low end to green on the high, white in mid
+    let color;
+    const t = i / (N - 1);
+    if (t < 0.4)       color = '#00F0FF';
+    else if (t < 0.65) color = '#00FF95';
+    else if (t < 0.82) color = '#39FF14';
+    else               color = 'rgba(255,255,255,0.4)';
+
+    bar.style.cssText = `
+      --peak: ${peak}%;
+      --dur: ${dur}s;
+      --delay: ${delay}s;
+      background: ${color};
+      box-shadow: 0 0 6px ${color}66;
+      flex: 1;
+      max-width: 12px;
+      min-height: 4px;
+    `;
+    barsEl.appendChild(bar);
+  }
+</script>
+
+</body>
+</html>
