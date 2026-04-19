@@ -162,49 +162,49 @@
       overflow:hidden;
       margin:0 auto;
       display:flex; flex-direction:column;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.07), 0 40px 120px rgba(0,0,0,.75);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 32px 80px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.3);
     }
 
-    /* title bar */
+    /* title bar — light */
     .tg-bar {
-      height:40px; background:#17212b;
+      height:40px; background:#f1f1f1;
       display:flex; align-items:center; padding:0 14px; gap:6px;
-      flex-shrink:0; border-bottom:1px solid rgba(0,0,0,.3);
+      flex-shrink:0; border-bottom:1px solid rgba(0,0,0,.08);
     }
     .tg-dots { display:flex; gap:6px; }
     .tg-dot  { width:12px; height:12px; border-radius:50%; }
     .tg-dot-r { background:#ff5f57; } .tg-dot-y { background:#febc2e; } .tg-dot-g { background:#28c840; }
-    .tg-bar-title { flex:1; text-align:center; font-size:13px; font-weight:500; color:rgba(255,255,255,.5); margin-right:36px; }
+    .tg-bar-title { flex:1; text-align:center; font-size:13px; font-weight:500; color:#666; margin-right:36px; }
 
     /* body */
     .tg-body { display:flex; flex:1; overflow:hidden; }
 
-    /* sidebar */
+    /* sidebar — light Telegram theme */
     .tg-sidebar {
       width:246px; flex-shrink:0;
-      background:#17212b;
+      background:#fff;
       display:flex; flex-direction:column;
-      border-right:1px solid rgba(0,0,0,.25);
+      border-right:1px solid rgba(0,0,0,.07);
     }
     .tg-search {
       margin:8px; padding:7px 12px;
-      background:rgba(0,0,0,.25); border-radius:18px;
-      font-size:12px; color:#52697a; user-select:none; flex-shrink:0;
+      background:#eff2f5; border-radius:18px;
+      font-size:12px; color:#aaa; user-select:none; flex-shrink:0;
     }
     .tg-list {
       overflow-y:auto; flex:1;
-      scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.08) transparent;
+      scrollbar-width:thin; scrollbar-color:rgba(0,0,0,.1) transparent;
     }
     .tg-list::-webkit-scrollbar { width:3px; }
-    .tg-list::-webkit-scrollbar-thumb { background:rgba(255,255,255,.09); border-radius:2px; }
+    .tg-list::-webkit-scrollbar-thumb { background:rgba(0,0,0,.1); border-radius:2px; }
 
     .tg-item {
       display:flex; align-items:center; gap:10px;
       padding:9px 12px; cursor:pointer;
       transition:background .12s;
     }
-    .tg-item:hover  { background:rgba(255,255,255,.04); }
-    .tg-item.active { background:#2b5278; }
+    .tg-item:hover  { background:#f5f5f5; }
+    .tg-item.active { background:#3390EC; }
 
     .tg-av {
       width:44px; height:44px; border-radius:50%;
@@ -212,54 +212,141 @@
       font-size:18px; flex-shrink:0;
     }
     .tg-item-text { flex:1; min-width:0; }
-    .tg-item-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .tg-item-prev { font-size:11.5px; color:#52697a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .tg-item.active .tg-item-prev { color:rgba(255,255,255,.55); }
-    .tg-item-time { font-size:10.5px; color:#52697a; align-self:flex-start; margin-top:2px; flex-shrink:0; }
-    .tg-item.active .tg-item-time { color:rgba(255,255,255,.55); }
+    .tg-item-name { font-size:13px; font-weight:600; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tg-item-prev { font-size:11.5px; color:#999; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tg-item.active .tg-item-name { color:#fff; }
+    .tg-item.active .tg-item-prev { color:rgba(255,255,255,.7); }
+    .tg-item-time { font-size:10.5px; color:#aaa; align-self:flex-start; margin-top:2px; flex-shrink:0; }
+    .tg-item.active .tg-item-time { color:rgba(255,255,255,.7); }
 
     /* chat panel */
-    .tg-chat { flex:1; background:#0e1621; display:flex; flex-direction:column; overflow:hidden; }
+    .tg-chat { flex:1; display:flex; flex-direction:column; overflow:hidden; }
 
     .tg-chat-header {
-      height:50px; background:#17212b;
-      border-bottom:1px solid rgba(0,0,0,.2);
+      height:50px; background:#fff;
+      border-bottom:1px solid rgba(0,0,0,.08);
       display:flex; align-items:center; padding:0 16px; gap:10px; flex-shrink:0;
     }
-    .tg-chat-av { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; }
-    .tg-chat-name { font-size:14px; font-weight:600; }
-    .tg-chat-sub  { font-size:11px; color:#52697a; }
+    .tg-chat-av { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; overflow:hidden; }
+    .tg-chat-name { font-size:14px; font-weight:600; color:#111; }
+    .tg-chat-sub  { font-size:11px; color:#8c9aa3; }
     .tg-open-btn {
       margin-left:auto;
       display:inline-flex; align-items:center; gap:5px;
-      background:#2b5278; color:#fff;
+      background:#2AABEE; color:#fff;
       font-size:11px; font-weight:600;
       padding:5px 13px; border-radius:12px; text-decoration:none;
       transition:background .15s;
     }
-    .tg-open-btn:hover { background:#3a6fa8; }
+    .tg-open-btn:hover { background:#1a9adc; }
 
+    /* wallpaper background */
     .tg-messages {
       flex:1; overflow-y:auto;
-      padding:14px 14px 10px;
-      display:flex; flex-direction:column; gap:7px;
-      scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.07) transparent;
+      padding:10px 12px 8px;
+      display:flex; flex-direction:column; gap:5px;
+      background-image: url('assets/telegram_background.png');
+      background-size: cover;
+      background-position: center;
+      scrollbar-width:thin; scrollbar-color:rgba(0,0,0,.15) transparent;
     }
     .tg-messages::-webkit-scrollbar { width:3px; }
-    .tg-messages::-webkit-scrollbar-thumb { background:rgba(255,255,255,.08); border-radius:2px; }
+    .tg-messages::-webkit-scrollbar-thumb { background:rgba(0,0,0,.15); border-radius:2px; }
 
-    .msg { max-width:76%; padding:7px 11px; font-size:12.5px; line-height:1.55; white-space:pre-line; }
-    .msg-bot  { background:#182533; border-radius:12px 12px 12px 2px; color:var(--text); align-self:flex-start; }
-    .msg-user { background:#2b5278; border-radius:12px 12px 2px 12px; color:#fff; align-self:flex-end; text-align:right; }
+    /* Telegram-style bubbles — white for bot, green-tint for user */
+    .msg {
+      max-width:78%; padding:7px 10px 5px;
+      font-size:12px; line-height:1.5; white-space:pre-line;
+      position:relative;
+    }
+    .msg-time {
+      font-size:10px; color:rgba(0,0,0,.35);
+      float:right; margin-left:8px; margin-top:2px; line-height:1;
+    }
+    .msg-bot {
+      background:#fff;
+      border-radius:2px 12px 12px 12px;
+      color:#111;
+      align-self:flex-start;
+      box-shadow:0 1px 2px rgba(0,0,0,.12);
+    }
+    .msg-user {
+      background:#c8f7a6;
+      border-radius:12px 2px 12px 12px;
+      color:#111;
+      align-self:flex-end;
+      box-shadow:0 1px 2px rgba(0,0,0,.12);
+    }
+    /* photo / video bubble — user outgoing */
+    .msg-photo {
+      max-width:160px; border-radius:12px 2px 12px 12px;
+      align-self:flex-end; overflow:hidden; position:relative;
+      box-shadow:0 1px 4px rgba(0,0,0,.2); flex-shrink:0;
+    }
+    .msg-photo img { width:100%; display:block; }
+    .msg-photo-time {
+      position:absolute; bottom:6px; right:8px;
+      font-size:10px; color:rgba(255,255,255,.95);
+      background:rgba(0,0,0,.35); padding:1px 6px; border-radius:6px;
+    }
+    /* video bubble — bot sends downloaded video */
+    .msg-video {
+      max-width:200px; border-radius:2px 12px 12px 12px;
+      align-self:flex-start; overflow:hidden; position:relative;
+      box-shadow:0 1px 4px rgba(0,0,0,.2); flex-shrink:0;
+      background:#000;
+    }
+    .msg-video img { width:100%; display:block; opacity:.88; }
+    .msg-video-overlay {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; justify-content:space-between;
+      padding:7px 9px;
+    }
+    .msg-video-play {
+      width:36px; height:36px; border-radius:50%;
+      background:rgba(0,0,0,.5); border:2px solid rgba(255,255,255,.8);
+      display:flex; align-items:center; justify-content:center;
+      align-self:center; margin:auto 0;
+      color:#fff; font-size:14px; padding-left:2px;
+    }
+    .msg-video-dur {
+      align-self:flex-end;
+      font-size:10px; color:#fff;
+      background:rgba(0,0,0,.45); padding:1px 6px; border-radius:6px;
+    }
+    /* calendar-style buttons */
+    .msg-cal-btn {
+      display:inline-flex; align-items:center; gap:4px;
+      background:#e8f4fd; border:1px solid #b8d9f0;
+      color:#1a6fa8; font-size:11px; font-weight:600;
+      padding:4px 10px; border-radius:8px; margin:3px 3px 0 0;
+      text-decoration:none;
+    }
+    /* Telegram inline keyboard buttons */
+    .msg-kbd {
+      align-self:flex-start;
+      max-width:78%;
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .msg-kbd-row { display:flex; gap:4px; }
+    .msg-kbd-btn {
+      flex:1; text-align:center;
+      background:#fff; border:1px solid rgba(0,0,0,.1);
+      color:#2AABEE; font-size:11.5px; font-weight:500;
+      padding:7px 10px; border-radius:8px;
+      box-shadow:0 1px 2px rgba(0,0,0,.08);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
 
     .tg-input-bar {
-      height:46px; background:#17212b;
-      border-top:1px solid rgba(0,0,0,.2);
+      height:46px; background:#f0f2f5;
+      border-top:1px solid rgba(0,0,0,.08);
       display:flex; align-items:center; padding:0 12px; gap:8px; flex-shrink:0;
     }
     .tg-input {
-      flex:1; background:rgba(0,0,0,.22); border-radius:18px;
-      padding:6px 12px; font-size:12px; color:#52697a;
+      flex:1; background:#fff; border-radius:22px;
+      padding:6px 14px; font-size:12px; color:#aaa;
+      border:1px solid rgba(0,0,0,.08);
     }
 
     /* ═══════════════════════════════════════
@@ -484,10 +571,10 @@
     <h2>Web Tools</h2>
   </div>
   <a class="web-card" href="https://enti.space/lang" target="_blank" rel="noopener">
-    <div class="web-icon">🌐</div>
+    <div class="web-icon" style="font-family:system-ui;font-size:15px;font-weight:700;letter-spacing:-1px;color:#3a7bd5;background:linear-gradient(135deg,#eef4ff,#ddeeff)">ʌaнг</div>
     <div class="web-info">
-      <div class="web-name">Language Learning</div>
-      <div class="web-desc">Learn any language by reading real content — contextual vocabulary acquisition, no flashcards.</div>
+      <div class="web-name">лангуаge</div>
+      <div class="web-desc">Read anything in any language — tap any word for instant translation and explanation. Camera, text, and history modes.</div>
       <span class="web-badge">Web App</span>
     </div>
     <span style="color:var(--muted);font-size:1.1rem;flex-shrink:0">→</span>
@@ -502,36 +589,39 @@
       name:'Brevitas', icon:'assets/brevitas_icon.png',
       url:'https://t.me/brevitas_info_bot',
       msgs:[
-        {t:'bot',  m:'Hello! Send me any article URL, video, or document and I\'ll give you an instant AI-powered summary.'},
-        {t:'user', m:'https://techcrunch.com/2026/04/ai-regulation'},
-        {t:'bot',  m:'✨ Summary ready!\n\n📌 Key takeaways:\n• EU AI Act enforcement begins Q3\n• Open-source models get exemptions\n• Fines up to 3% of global revenue\n\n[8 min read → 25 sec summary]'},
+        {t:'user', m:'https://youtube.com/watch?v=9RMx3L5VBSA\nTop 21 Upcoming RTS Games for 2026', time:'12:48'},
+        {t:'bot',  m:'- Anvil Empires is a medieval sandbox persistent warfare game for up to 1,000 players, focusing on player-driven gathering, crafting, building, and large-scale coordinated combat.\n- Zerospace is a cinematic RTS mixing competitive speed with RPG-inspired branching narrative elements and a persistent multiplayer galactic war mode.\n- Sanctuary: Shattered Sun is a grand-scale sci-fi RTS channeling the spirit of Supreme Commander, set on a Dyson sphere with massive maps and environmental manipulation.\n- Here Comes the Swarm is a pure survival RTS focused on holding the line against overwhelming numbers with a single unit or squad.', time:'12:48'},
+        {t:'bot',  m:'📖 Translation options:', time:'12:48'},
+        {t:'kbd',  rows:[['🌐 Translate to English 🇬🇧','⚙️ Languages'],['🔍 Find logic fallacies'],['🧠 Psychoanalyze'],['💬 Ask about this video']]},
       ]
     },
     calendar: {
       name:'Photo to Calendar', icon:'assets/calendar_event_bot_icon.jpg',
       url:'https://t.me/calendar_event_with_ai_bot',
       msgs:[
-        {t:'bot',  m:'Send me a photo of any event — flyer, poster, invite — and I\'ll create a calendar event from it instantly.'},
-        {t:'user', m:'[photo of concert flyer]'},
-        {t:'bot',  m:'📅 Event detected!\n\n🎵 Floating Points — Live\n📍 Barbican Centre, London\n🗓 May 22, 2026 · 8:00 PM\n\n[Add to Google Calendar] [Add to Apple Calendar]'},
+        {t:'photo', src:'assets/invite_calendarbot.jpg', time:'13:58'},
+        {t:'bot',  m:'⏳ Processing image...', time:'13:58'},
+        {t:'bot',  m:'📅 Wedding Celebration - Olivia and Taylor\n\n📍 ANYWHERE HOTEL, 123 ANYWHERE STREET, ANY CITY\n📆 30-10-2023\n⏰ 15:00 – 16:00\n\nOlivia and Taylor\'s wedding celebration.\n📝 Reception to follow.', time:'13:58'},
+        {t:'cal-btns', time:'13:58'},
       ]
     },
     downloader: {
       name:'Video Downloader', icon:'assets/downloader_bot_icon.png',
       url:'https://t.me/downloader_inf_bot',
       msgs:[
-        {t:'bot',  m:'Send me any video link — YouTube, Instagram, TikTok, X — and I\'ll download and send it back to you.'},
-        {t:'user', m:'https://youtube.com/watch?v=dQw4w9WgXcQ'},
-        {t:'bot',  m:'⬇ Downloaded!\n\nRick Astley — Never Gonna Give You Up\n📦 1080p · 43 MB\n\n[Video file ↓]'},
+        {t:'bot',  m:'🎬 Send me any video link — YouTube, Instagram, TikTok, X, Vimeo — I\'ll download it and send it right here.', time:'2:44'},
+        {t:'user', m:'https://vt.tiktok.com/ZSH9g7K5U', time:'2:45'},
+        {t:'bot',  m:'✅ Download Complete!\n\n📁 Size: 4.53 MB\n🪙 Credits used: 1', time:'2:56'},
+        {t:'video', src:'assets/downloader_video_image.png', dur:'0:58', time:'2:56'},
       ]
     },
     culinary: {
       name:'Culinary Decoder', icon:'assets/recipe_bot_icon.jpg',
       url:'https://t.me/recipe_sm_vi_bot',
       msgs:[
-        {t:'bot',  m:'Send me a cooking reel or video link and I\'ll extract the full structured recipe for you.'},
-        {t:'user', m:'https://instagram.com/reel/abc123xyz'},
-        {t:'bot',  m:'👨‍🍳 Cacio e Pepe\n\nIngredients:\n• 200g spaghetti\n• 80g Pecorino Romano\n• 2 tsp cracked black pepper\n• Salt\n\nSteps:\n1. Cook pasta al dente, reserve 1 cup water\n2. Toast pepper in dry pan 1 min\n3. Mix cheese + pepper + pasta water into emulsion...'},
+        {t:'bot',  m:'🍽 Send me a cooking reel, TikTok, or YouTube Short and I\'ll extract the full recipe for you.', time:'19:45'},
+        {t:'user', m:'https://www.instagram.com/reel/Cxyz123abc/', time:'19:46'},
+        {t:'bot',  m:'👨‍🍳 Cacio e Pepe\n\nIngredients:\n• 200g spaghetti\n• 80g Pecorino Romano, finely grated\n• 2 tsp coarsely cracked black pepper\n• Salt, pasta water\n\nSteps:\n1. Cook pasta al dente, reserve 1 cup pasta water\n2. Toast pepper in a dry pan for 1 min\n3. Combine cheese + pepper + pasta water into a creamy emulsion\n4. Toss pasta in the pan off-heat until coated', time:'19:46'},
       ]
     }
   };
@@ -539,11 +629,35 @@
   function renderMsgs(id) {
     const box = document.getElementById('tg-messages');
     box.innerHTML = '';
-    BOTS[id].msgs.forEach(({t, m}) => {
-      const d = document.createElement('div');
-      d.className = 'msg ' + (t === 'bot' ? 'msg-bot' : 'msg-user');
-      d.textContent = m;
-      box.appendChild(d);
+    BOTS[id].msgs.forEach(msg => {
+      let el;
+      if (msg.t === 'photo') {
+        el = document.createElement('div');
+        el.className = 'msg-photo';
+        el.innerHTML = `<img src="${msg.src}" alt=""/><span class="msg-photo-time">${msg.time} ✓✓</span>`;
+      } else if (msg.t === 'video') {
+        el = document.createElement('div');
+        el.className = 'msg-video';
+        el.innerHTML = `<img src="${msg.src}" alt=""/><div class="msg-video-overlay"><div class="msg-video-play">▶</div><span class="msg-video-dur">${msg.dur}</span></div>`;
+      } else if (msg.t === 'kbd') {
+        el = document.createElement('div');
+        el.className = 'msg-kbd';
+        el.innerHTML = msg.rows.map(row =>
+          `<div class="msg-kbd-row">${row.map(b => `<div class="msg-kbd-btn">${b}</div>`).join('')}</div>`
+        ).join('');
+      } else if (msg.t === 'cal-btns') {
+        el = document.createElement('div');
+        el.className = 'msg msg-bot';
+        el.innerHTML = `📅 Add to calendar <span class="msg-time">${msg.time}</span><br><br>`
+          + `<a class="msg-cal-btn" href="#">🗓 Google ↗</a>`
+          + `<a class="msg-cal-btn" href="#">🍎 Apple ↗</a>`
+          + `<a class="msg-cal-btn" href="#">📤 .ics</a>`;
+      } else {
+        el = document.createElement('div');
+        el.className = 'msg ' + (msg.t === 'bot' ? 'msg-bot' : 'msg-user');
+        el.innerHTML = `${msg.m.replace(/\n/g,'<br>')}<span class="msg-time">${msg.time}${msg.t==='user'?' ✓✓':''}</span>`;
+      }
+      box.appendChild(el);
     });
     box.scrollTop = box.scrollHeight;
   }
