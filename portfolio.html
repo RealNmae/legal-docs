@@ -1,420 +1,600 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dmitriy Kegeles — Projects</title>
   <style>
     :root {
-      --bg:      #080810;
-      --surface: rgba(255,255,255,0.04);
-      --border:  rgba(255,255,255,0.07);
-      --text:    #f0ede8;
-      --muted:   rgba(255,255,255,0.45);
-      --radius:  18px;
+      --bg: #070710;
+      --text: #f0ede8;
+      --muted: rgba(255,255,255,0.42);
+      --border: rgba(255,255,255,0.07);
     }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* noise overlay */
+    /* NOISE */
     body::before {
-      content: '';
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.5;
+      opacity:.5;
     }
 
-    /* ── layout wrapper ── */
-    .wrap {
-      position: relative; z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px 100px;
-    }
-
-    /* ── header ── */
+    /* HEADER */
     header {
-      padding: 72px 0 64px;
-      text-align: center;
+      position:relative; z-index:10;
+      text-align:center;
+      padding: 72px 24px 56px;
     }
-
     .avatar {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      box-shadow: 0 0 0 2px rgba(255,255,255,0.08), 0 0 32px rgba(93,187,143,0.25);
-      overflow: hidden;
-      display: block;
+      width:82px; height:82px; border-radius:50%; overflow:hidden;
+      margin:0 auto 18px;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.09), 0 0 36px rgba(93,187,143,0.22);
+    }
+    .avatar img { width:100%; height:100%; object-fit:cover; object-position:center top; }
+    header h1 { font-size:clamp(1.8rem,4vw,2.6rem); font-weight:600; letter-spacing:-.5px; margin-bottom:10px; }
+    header p  { color:var(--muted); font-size:1rem; line-height:1.65; max-width:400px; margin:0 auto; }
+
+    /* SECTION */
+    .section { position:relative; z-index:1; padding:80px 24px 96px; }
+    .section-hd { text-align:center; margin-bottom:56px; }
+    .tag {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--muted); border:1px solid var(--border);
+      padding:4px 12px; border-radius:20px; margin-bottom:14px;
+    }
+    .section-hd h2 { font-size:clamp(1.5rem,3vw,2rem); font-weight:600; letter-spacing:-.3px; }
+
+    /* DIVIDER */
+    .divider {
+      position:relative; z-index:1;
+      width:1px; height:60px;
+      background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent);
+      margin:0 auto;
     }
 
-    .avatar img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center top;
+    /* ═══════════════════════════════════════
+       iOS SECTION
+    ═══════════════════════════════════════ */
+    .section--ios {
+      background: radial-gradient(ellipse 90% 60% at 50% 0%, rgba(20,5,55,0.55) 0%, transparent 70%);
     }
 
-    header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 600;
-      letter-spacing: -0.5px;
-      margin-bottom: 10px;
+    /* Phone scene */
+    .phones-scene {
+      position:relative;
+      height:460px;
+      max-width:600px;
+      margin:0 auto 36px;
     }
 
-    header p {
-      color: var(--muted);
-      font-size: 1rem;
-      max-width: 460px;
-      margin: 0 auto;
-      line-height: 1.6;
+    .phone-wrap {
+      position:absolute;
+      top:50%; left:50%;
+      margin-top:-205px; margin-left:-98px;
+      cursor:pointer;
+      transition: transform .38s cubic-bezier(.34,1.4,.64,1), filter .28s ease;
     }
 
-    /* ── section ── */
-    section { margin-bottom: 64px; }
+    .phone-wrap.pw-left   { transform:rotate(-13deg) translate(-165px,18px); z-index:1; filter:brightness(.55) saturate(.75); }
+    .phone-wrap.pw-center { transform:rotate(-4deg)  translate(-42px,7px);   z-index:2; filter:brightness(.8); }
+    .phone-wrap.pw-right  { transform:rotate(6deg)   translate(92px,0);      z-index:3; filter:brightness(1); }
 
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
+    .phone-wrap.pw-left:hover   { transform:rotate(-13deg) translate(-165px,4px);  filter:brightness(.93) !important; z-index:10; }
+    .phone-wrap.pw-center:hover { transform:rotate(-4deg)  translate(-42px,-8px);  filter:brightness(.97) !important; z-index:10; }
+    .phone-wrap.pw-right:hover  { transform:rotate(6deg)   translate(92px,-8px);   filter:brightness(1)   !important; z-index:10; }
+
+    /* neon glow per app */
+    .phone-wrap.pw-left:hover   .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(93,187,143,.45),  0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(93,187,143,.18); }
+    .phone-wrap.pw-center:hover .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(156,45,255,.55),  0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(156,45,255,.22); }
+    .phone-wrap.pw-right:hover  .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(0,255,149,.45),   0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(0,255,149,.16); }
+
+    /* Phone frame */
+    .phone {
+      width:196px; height:410px;
+      background:#1c1c1e;
+      border-radius:46px;
+      border:6px solid #2c2c2e;
+      position:relative; overflow:hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 0 0 1px rgba(0,0,0,.5), 0 40px 80px rgba(0,0,0,.8);
+      transition: box-shadow .3s ease;
+    }
+    /* side button */
+    .phone::after {
+      content:''; position:absolute;
+      right:-8px; top:90px;
+      width:3px; height:56px;
+      background:#2c2c2e; border-radius:0 2px 2px 0;
     }
 
-    .section-label h2 {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .phone-island {
+      position:absolute; top:10px; left:50%; transform:translateX(-50%);
+      width:76px; height:22px; background:#000; border-radius:12px; z-index:10;
+    }
+    .phone-home {
+      position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+      width:88px; height:4px; background:rgba(255,255,255,.22); border-radius:2px; z-index:10;
     }
 
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    .phone-screen {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:9px; padding:48px 14px 36px;
+    }
+    /* placeholder screenshot label */
+    .phone-screen-placeholder {
+      position:absolute; inset:0;
+      display:flex; align-items:flex-end; justify-content:center;
+      padding-bottom:56px; pointer-events:none;
+    }
+    .phone-screen-placeholder span {
+      font-size:9px; letter-spacing:.08em; text-transform:uppercase;
+      color:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.08);
+      padding:2px 8px; border-radius:8px;
     }
 
-    /* ── card grid ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
+    /* screen bg per app */
+    .bg-itero    { background: radial-gradient(circle at 50% 32%, rgba(93,187,143,.15) 0%, transparent 55%), linear-gradient(175deg,#05100c 0%,#020808 100%); }
+    .bg-gyrosumo { background: radial-gradient(circle at 50% 32%, rgba(156,45,255,.18) 0%, transparent 55%), linear-gradient(175deg,#0e0518 0%,#060010 100%); }
+    .bg-serpent  { background: radial-gradient(circle at 50% 32%, rgba(0,255,149,.12) 0%, transparent 55%), linear-gradient(175deg,#081208 0%,#020804 100%); }
+
+    .phone-icon { width:72px; height:72px; border-radius:18px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.55); flex-shrink:0; }
+    .phone-icon img { width:100%; height:100%; object-fit:cover; }
+    .phone-app-name { font-size:14px; font-weight:600; color:#fff; }
+    .phone-app-tag  { font-size:10px; color:rgba(255,255,255,.44); line-height:1.45; text-align:center; }
+
+    /* App Store row below phones */
+    .as-row {
+      display:flex; justify-content:center; gap:16px; flex-wrap:wrap;
+      max-width:600px; margin:0 auto;
+    }
+    .as-btn {
+      display:inline-flex; align-items:center; gap:7px;
+      font-size:.8rem; font-weight:600;
+      padding:9px 18px; border-radius:22px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.05);
+      color:var(--text); text-decoration:none;
+      transition:background .15s, border-color .15s, transform .15s;
+    }
+    .as-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.15); transform:translateY(-1px); }
+    .as-btn svg   { opacity:.7; flex-shrink:0; }
+
+    /* ═══════════════════════════════════════
+       TELEGRAM SECTION
+    ═══════════════════════════════════════ */
+    .section--tg {
+      background: radial-gradient(ellipse 80% 50% at 50% 100%, rgba(5,20,45,.5) 0%, transparent 70%);
     }
 
-    /* ── card ── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      text-decoration: none;
-      color: inherit;
-      cursor: default;
-      position: relative;
+    .tg-window {
+      width:min(780px,100%);
+      height:470px;
+      border-radius:12px;
+      overflow:hidden;
+      margin:0 auto;
+      display:flex; flex-direction:column;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.07), 0 40px 120px rgba(0,0,0,.75);
     }
 
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(255,255,255,0.14);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    /* title bar */
+    .tg-bar {
+      height:40px; background:#17212b;
+      display:flex; align-items:center; padding:0 14px; gap:6px;
+      flex-shrink:0; border-bottom:1px solid rgba(0,0,0,.3);
+    }
+    .tg-dots { display:flex; gap:6px; }
+    .tg-dot  { width:12px; height:12px; border-radius:50%; }
+    .tg-dot-r { background:#ff5f57; } .tg-dot-y { background:#febc2e; } .tg-dot-g { background:#28c840; }
+    .tg-bar-title { flex:1; text-align:center; font-size:13px; font-weight:500; color:rgba(255,255,255,.5); margin-right:36px; }
+
+    /* body */
+    .tg-body { display:flex; flex:1; overflow:hidden; }
+
+    /* sidebar */
+    .tg-sidebar {
+      width:246px; flex-shrink:0;
+      background:#17212b;
+      display:flex; flex-direction:column;
+      border-right:1px solid rgba(0,0,0,.25);
+    }
+    .tg-search {
+      margin:8px; padding:7px 12px;
+      background:rgba(0,0,0,.25); border-radius:18px;
+      font-size:12px; color:#52697a; user-select:none; flex-shrink:0;
+    }
+    .tg-list {
+      overflow-y:auto; flex:1;
+      scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.08) transparent;
+    }
+    .tg-list::-webkit-scrollbar { width:3px; }
+    .tg-list::-webkit-scrollbar-thumb { background:rgba(255,255,255,.09); border-radius:2px; }
+
+    .tg-item {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 12px; cursor:pointer;
+      transition:background .12s;
+    }
+    .tg-item:hover  { background:rgba(255,255,255,.04); }
+    .tg-item.active { background:#2b5278; }
+
+    .tg-av {
+      width:44px; height:44px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:18px; flex-shrink:0;
+    }
+    .tg-item-text { flex:1; min-width:0; }
+    .tg-item-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tg-item-prev { font-size:11.5px; color:#52697a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tg-item.active .tg-item-prev { color:rgba(255,255,255,.55); }
+    .tg-item-time { font-size:10.5px; color:#52697a; align-self:flex-start; margin-top:2px; flex-shrink:0; }
+    .tg-item.active .tg-item-time { color:rgba(255,255,255,.55); }
+
+    /* chat panel */
+    .tg-chat { flex:1; background:#0e1621; display:flex; flex-direction:column; overflow:hidden; }
+
+    .tg-chat-header {
+      height:50px; background:#17212b;
+      border-bottom:1px solid rgba(0,0,0,.2);
+      display:flex; align-items:center; padding:0 16px; gap:10px; flex-shrink:0;
+    }
+    .tg-chat-av { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; }
+    .tg-chat-name { font-size:14px; font-weight:600; }
+    .tg-chat-sub  { font-size:11px; color:#52697a; }
+    .tg-open-btn {
+      margin-left:auto;
+      display:inline-flex; align-items:center; gap:5px;
+      background:#2b5278; color:#fff;
+      font-size:11px; font-weight:600;
+      padding:5px 13px; border-radius:12px; text-decoration:none;
+      transition:background .15s;
+    }
+    .tg-open-btn:hover { background:#3a6fa8; }
+
+    .tg-messages {
+      flex:1; overflow-y:auto;
+      padding:14px 14px 10px;
+      display:flex; flex-direction:column; gap:7px;
+      scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.07) transparent;
+    }
+    .tg-messages::-webkit-scrollbar { width:3px; }
+    .tg-messages::-webkit-scrollbar-thumb { background:rgba(255,255,255,.08); border-radius:2px; }
+
+    .msg { max-width:76%; padding:7px 11px; font-size:12.5px; line-height:1.55; white-space:pre-line; }
+    .msg-bot  { background:#182533; border-radius:12px 12px 12px 2px; color:var(--text); align-self:flex-start; }
+    .msg-user { background:#2b5278; border-radius:12px 12px 2px 12px; color:#fff; align-self:flex-end; text-align:right; }
+
+    .tg-input-bar {
+      height:46px; background:#17212b;
+      border-top:1px solid rgba(0,0,0,.2);
+      display:flex; align-items:center; padding:0 12px; gap:8px; flex-shrink:0;
+    }
+    .tg-input {
+      flex:1; background:rgba(0,0,0,.22); border-radius:18px;
+      padding:6px 12px; font-size:12px; color:#52697a;
     }
 
-    /* neon glows for cards with landing pages */
-    .card--serpent:hover  { border-color: rgba(0,255,149,0.4);  box-shadow: 0 0 0 1px rgba(0,255,149,0.15), 0 16px 48px rgba(0,0,0,0.5), 0 0 40px rgba(0,255,149,0.12); }
-    .card--gyrosumo:hover { border-color: rgba(156,45,255,0.5); box-shadow: 0 0 0 1px rgba(156,45,255,0.2), 0 16px 48px rgba(0,0,0,0.5), 0 0 40px rgba(156,45,255,0.15); }
-    .card--itero:hover    { border-color: rgba(93,187,143,0.5); box-shadow: 0 0 0 1px rgba(93,187,143,0.2), 0 16px 48px rgba(0,0,0,0.5), 0 0 40px rgba(93,187,143,0.15); }
+    /* ═══════════════════════════════════════
+       WEB SECTION
+    ═══════════════════════════════════════ */
+    .section--web { padding-top:20px; }
 
-    /* stretched link covers the whole card */
-    .card-link {
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius);
-      cursor: pointer;
+    .web-card {
+      max-width:500px; margin:0 auto;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:16px; padding:28px;
+      display:flex; align-items:center; gap:20px;
+      text-decoration:none; color:var(--text);
+      transition:transform .2s, border-color .2s, box-shadow .2s;
+    }
+    .web-card:hover {
+      transform:translateY(-3px);
+      border-color:rgba(167,139,250,.3);
+      box-shadow:0 16px 48px rgba(0,0,0,.4), 0 0 40px rgba(167,139,250,.08);
+    }
+    .web-icon {
+      width:52px; height:52px; border-radius:14px; flex-shrink:0;
+      background:linear-gradient(135deg,#0f0a20,#1a1030);
+      display:flex; align-items:center; justify-content:center; font-size:22px;
+      box-shadow:0 0 20px rgba(167,139,250,.12);
+    }
+    .web-info { flex:1; }
+    .web-name { font-size:1rem; font-weight:600; margin-bottom:4px; }
+    .web-desc { font-size:.82rem; color:var(--muted); line-height:1.45; margin-bottom:6px; }
+    .web-badge {
+      display:inline-block; font-size:.66rem; font-weight:600; letter-spacing:.08em;
+      text-transform:uppercase; padding:2px 7px; border-radius:5px;
+      background:rgba(93,187,143,.12); color:#5dbb8f;
     }
 
-    /* keep action buttons above the stretched link */
-    .card-btn {
-      position: relative;
-      z-index: 1;
-    }
+    /* FOOTER */
+    footer { position:relative; z-index:1; text-align:center; padding:40px 24px 56px; color:rgba(255,255,255,.18); font-size:.8rem; }
 
-    /* icon area */
-    .card-icon {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-
-    .card-icon img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 14px;
-    }
-
-    .card-meta {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .card-info { flex: 1; }
-
-    .card-name {
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1.3;
-      margin-bottom: 6px;
-    }
-
-    .card-desc {
-      font-size: 0.83rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    /* badge */
-    .badge {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .badge-ios   { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
-    .badge-tg    { background: rgba(42,171,238,0.12);  color: #2AABEE; }
-    .badge-web   { background: rgba(93,187,143,0.12);  color: #5dbb8f; }
-
-    /* CTA button */
-    .card-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 9px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      color: var(--text);
-      text-decoration: none;
-      transition: background 0.15s ease, border-color 0.15s ease;
-      align-self: flex-start;
-    }
-
-    .card-btn:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.16);
-    }
-
-    .card-btn svg { opacity: 0.7; }
-
-    /* ── icon color themes ── */
-    .icon-serpent  { background: linear-gradient(135deg, #001a12, #003322); box-shadow: 0 0 20px rgba(0,255,149,0.15); }
-    .icon-gyrosumo { background: linear-gradient(135deg, #100520, #1a0535); box-shadow: 0 0 20px rgba(156,45,255,0.2); }
-    .icon-itero    { background: linear-gradient(135deg, #050d10, #0a1f18); box-shadow: 0 0 20px rgba(93,187,143,0.15); }
-    .icon-brevitas { background: linear-gradient(135deg, #050a14, #081525); box-shadow: 0 0 20px rgba(42,171,238,0.15); }
-    .icon-calendar { background: linear-gradient(135deg, #140a05, #251505); box-shadow: 0 0 20px rgba(255,184,20,0.15); }
-    .icon-downloader { background: linear-gradient(135deg, #100508, #200a10); box-shadow: 0 0 20px rgba(255,80,80,0.15); }
-    .icon-culinary { background: linear-gradient(135deg, #0f0d03, #1f1a06); box-shadow: 0 0 20px rgba(255,200,50,0.15); }
-    .icon-lang     { background: linear-gradient(135deg, #080514, #100a25); box-shadow: 0 0 20px rgba(167,139,250,0.15); }
-
-    /* ── footer ── */
-    footer {
-      position: relative; z-index: 1;
-      text-align: center;
-      padding-bottom: 48px;
-      color: rgba(255,255,255,0.2);
-      font-size: 0.8rem;
-    }
-
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: 1fr; }
-      header { padding: 48px 0 40px; }
+    /* RESPONSIVE */
+    @media(max-width:640px) {
+      .phones-scene { height:380px; }
+      .phone { width:164px; height:346px; border-radius:38px; }
+      .phone-island { width:62px; height:18px; }
+      .phone-icon { width:58px; height:58px; border-radius:14px; }
+      .phone-app-name { font-size:12px; }
+      .phone-app-tag  { font-size:9px; }
+      .phone-wrap { margin-top:-173px; margin-left:-82px; }
+      .phone-wrap.pw-left   { transform:rotate(-13deg) translate(-132px,14px); }
+      .phone-wrap.pw-center { transform:rotate(-4deg)  translate(-32px,5px); }
+      .phone-wrap.pw-right  { transform:rotate(6deg)   translate(76px,0); }
+      .phone-wrap.pw-left:hover   { transform:rotate(-13deg) translate(-132px,2px); }
+      .phone-wrap.pw-center:hover { transform:rotate(-4deg)  translate(-32px,-6px); }
+      .phone-wrap.pw-right:hover  { transform:rotate(6deg)   translate(76px,-6px); }
+      .tg-window { height:360px; }
+      .tg-sidebar { width:180px; }
+      .tg-item-name { font-size:12px; }
     }
   </style>
 </head>
 <body>
 
-<div class="wrap">
+<!-- HEADER -->
+<header>
+  <div class="avatar"><img src="assets/avatar.jpg" alt="Dmitriy Kegeles"/></div>
+  <h1>Dmitriy Kegeles</h1>
+  <p>iOS apps &amp; Telegram bots — tools built for curiosity, movement, and the everyday.</p>
+</header>
 
-  <header>
-    <div class="avatar"><img src="assets/avatar.jpg" alt="Dmitriy Kegeles" /></div>
-    <h1>Dmitriy Kegeles</h1>
-    <p>iOS apps &amp; Telegram bots — tools built for curiosity, movement, and the everyday.</p>
-  </header>
+<!-- ── iOS SECTION ── -->
+<section class="section section--ios">
+  <div class="section-hd">
+    <span class="tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+      iOS Apps
+    </span>
+    <h2>Built for iPhone</h2>
+  </div>
 
-  <!-- iOS Apps -->
-  <section>
-    <div class="section-label"><h2>iOS Apps</h2></div>
-    <div class="grid">
+  <!-- 3 fanned phones -->
+  <div class="phones-scene">
 
-      <div class="card card--serpent">
-        <a class="card-link" href="serpentfeel.html" aria-label="SerpentFeel landing page"></a>
-        <div class="card-meta">
-          <div class="card-icon"><img src="assets/SerpentFeelIcon.png" alt="SerpentFeel icon" /></div>
-          <span class="badge badge-ios">iOS</span>
+    <!-- Itero — back left -->
+    <div class="phone-wrap pw-left" onclick="window.location.href='itero_landing.html'" title="Itero — tap to explore">
+      <div class="phone">
+        <div class="phone-island"></div>
+        <div class="phone-screen bg-itero">
+          <div class="phone-icon"><img src="assets/IteroIcon.png" alt="Itero"/></div>
+          <div class="phone-app-name">Itero</div>
+          <div class="phone-app-tag">Live the path.<br/>Itero remembers the rest.</div>
         </div>
-        <div class="card-info">
-          <div class="card-name">SerpentFeel</div>
-          <div class="card-desc">Hold it in your hands. Tilt. Listen. A gyroscopic sensory experience unlike anything else.</div>
-        </div>
-        <a class="card-btn" href="https://apps.apple.com/us/app/serpentfeel/id6760789879" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
-          App Store
-        </a>
+        <div class="phone-screen-placeholder"><span>screenshot coming soon</span></div>
+        <div class="phone-home"></div>
       </div>
-
-      <div class="card card--gyrosumo">
-        <a class="card-link" href="gyrosumo_landing.html" aria-label="GyroSumo landing page"></a>
-        <div class="card-meta">
-          <div class="card-icon"><img src="assets/gyroSumoIcon.png" alt="GyroSumo icon" /></div>
-          <span class="badge badge-ios">iOS</span>
-        </div>
-        <div class="card-info">
-          <div class="card-name">GyroSumo</div>
-          <div class="card-desc">A shared experiment in physical presence. What does your body communicate when words aren't involved?</div>
-        </div>
-        <a class="card-btn" href="https://apps.apple.com/il/app/gyrosumo/id6761440527" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
-          App Store
-        </a>
-      </div>
-
-      <div class="card card--itero">
-        <a class="card-link" href="itero_landing.html" aria-label="Itero landing page"></a>
-        <div class="card-meta">
-          <div class="card-icon"><img src="assets/IteroIcon.png" alt="Itero icon" /></div>
-          <span class="badge badge-ios">iOS</span>
-        </div>
-        <div class="card-info">
-          <div class="card-name">Itero</div>
-          <div class="card-desc">Private, local-first journey tracker. Background tracking with zero cloud exposure. Live the path — Itero remembers the rest.</div>
-        </div>
-        <a class="card-btn" href="https://apps.apple.com/us/app/itero-private-tracker/id6760823720" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
-          App Store
-        </a>
-      </div>
-
     </div>
-  </section>
 
-  <!-- Telegram Bots -->
-  <section>
-    <div class="section-label"><h2>Telegram Bots</h2></div>
-    <div class="grid">
-
-      <div class="card">
-        <div class="card-meta">
-          <div class="card-icon icon-brevitas">✦</div>
-          <span class="badge badge-tg">Telegram</span>
+    <!-- GyroSumo — center -->
+    <div class="phone-wrap pw-center" onclick="window.location.href='gyrosumo_landing.html'" title="GyroSumo — tap to explore">
+      <div class="phone">
+        <div class="phone-island"></div>
+        <div class="phone-screen bg-gyrosumo">
+          <div class="phone-icon"><img src="assets/gyroSumoIcon.png" alt="GyroSumo"/></div>
+          <div class="phone-app-name">GyroSumo</div>
+          <div class="phone-app-tag">A shared experiment<br/>in physical presence.</div>
         </div>
-        <div class="card-info">
-          <div class="card-name">Brevitas</div>
-          <div class="card-desc">AI-powered summaries &amp; analysis. Distill any content into clear, structured insights instantly.</div>
-        </div>
-        <a class="card-btn" href="https://t.me/brevitas_info_bot" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Open Bot
-        </a>
+        <div class="phone-screen-placeholder"><span>screenshot coming soon</span></div>
+        <div class="phone-home"></div>
       </div>
-
-      <div class="card">
-        <div class="card-meta">
-          <div class="card-icon icon-calendar">📅</div>
-          <span class="badge badge-tg">Telegram</span>
-        </div>
-        <div class="card-info">
-          <div class="card-name">Photo to Calendar Event</div>
-          <div class="card-desc">Snap a photo of any event flyer or invite — AI extracts the details and creates a calendar event for you.</div>
-        </div>
-        <a class="card-btn" href="https://t.me/calendar_event_with_ai_bot" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Open Bot
-        </a>
-      </div>
-
-      <div class="card">
-        <div class="card-meta">
-          <div class="card-icon icon-downloader">⬇</div>
-          <span class="badge badge-tg">Telegram</span>
-        </div>
-        <div class="card-info">
-          <div class="card-name">Video Downloader</div>
-          <div class="card-desc">Archive anything. Send any video link — get the file back directly in Telegram.</div>
-        </div>
-        <a class="card-btn" href="https://t.me/downloader_inf_bot" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Open Bot
-        </a>
-      </div>
-
-      <div class="card">
-        <div class="card-meta">
-          <div class="card-icon icon-culinary">🍳</div>
-          <span class="badge badge-tg">Telegram</span>
-        </div>
-        <div class="card-info">
-          <div class="card-name">Culinary Decoder</div>
-          <div class="card-desc">Reels to recipes. Send a cooking video or reel — get back a clean, structured recipe.</div>
-        </div>
-        <a class="card-btn" href="https://t.me/recipe_sm_vi_bot" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Open Bot
-        </a>
-      </div>
-
     </div>
-  </section>
 
-  <!-- Web -->
-  <section>
-    <div class="section-label"><h2>Web</h2></div>
-    <div class="grid">
+    <!-- SerpentFeel — front right -->
+    <div class="phone-wrap pw-right" onclick="window.location.href='serpentfeel.html'" title="SerpentFeel — tap to explore">
+      <div class="phone">
+        <div class="phone-island"></div>
+        <div class="phone-screen bg-serpent">
+          <div class="phone-icon"><img src="assets/SerpentFeelIcon.png" alt="SerpentFeel"/></div>
+          <div class="phone-app-name">SerpentFeel</div>
+          <div class="phone-app-tag">Hold it. Tilt.<br/>Listen.</div>
+        </div>
+        <div class="phone-screen-placeholder"><span>screenshot coming soon</span></div>
+        <div class="phone-home"></div>
+      </div>
+    </div>
 
-      <div class="card">
-        <div class="card-meta">
-          <div class="card-icon icon-lang">🌐</div>
-          <span class="badge badge-web">Web App</span>
+  </div><!-- /phones-scene -->
+
+  <!-- App Store buttons -->
+  <div class="as-row">
+    <a class="as-btn" href="https://apps.apple.com/us/app/itero-private-tracker/id6760823720" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+      Itero
+    </a>
+    <a class="as-btn" href="https://apps.apple.com/il/app/gyrosumo/id6761440527" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+      GyroSumo
+    </a>
+    <a class="as-btn" href="https://apps.apple.com/us/app/serpentfeel/id6760789879" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+      SerpentFeel
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── TELEGRAM SECTION ── -->
+<section class="section section--tg">
+  <div class="section-hd">
+    <span class="tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      Telegram Bots
+    </span>
+    <h2>Bots that work for you</h2>
+  </div>
+
+  <div class="tg-window">
+    <!-- macOS-style title bar -->
+    <div class="tg-bar">
+      <div class="tg-dots">
+        <div class="tg-dot tg-dot-r"></div>
+        <div class="tg-dot tg-dot-y"></div>
+        <div class="tg-dot tg-dot-g"></div>
+      </div>
+      <div class="tg-bar-title">Telegram</div>
+    </div>
+
+    <div class="tg-body">
+      <!-- Sidebar -->
+      <div class="tg-sidebar">
+        <div class="tg-search">🔍 Search</div>
+        <div class="tg-list">
+
+          <div class="tg-item active" onclick="selectBot('brevitas',this)">
+            <div class="tg-av" style="background:linear-gradient(135deg,#0d2440,#1a6ea8)">✦</div>
+            <div class="tg-item-text">
+              <div class="tg-item-name">Brevitas</div>
+              <div class="tg-item-prev">Here's your summary...</div>
+            </div>
+            <div class="tg-item-time">now</div>
+          </div>
+
+          <div class="tg-item" onclick="selectBot('calendar',this)">
+            <div class="tg-av" style="background:linear-gradient(135deg,#261505,#c87800)">📅</div>
+            <div class="tg-item-text">
+              <div class="tg-item-name">Photo to Calendar</div>
+              <div class="tg-item-prev">Event created ✓</div>
+            </div>
+            <div class="tg-item-time">2m</div>
+          </div>
+
+          <div class="tg-item" onclick="selectBot('downloader',this)">
+            <div class="tg-av" style="background:linear-gradient(135deg,#1a0808,#b02020)">⬇</div>
+            <div class="tg-item-text">
+              <div class="tg-item-name">Video Downloader</div>
+              <div class="tg-item-prev">Here's your file ↓</div>
+            </div>
+            <div class="tg-item-time">5m</div>
+          </div>
+
+          <div class="tg-item" onclick="selectBot('culinary',this)">
+            <div class="tg-av" style="background:linear-gradient(135deg,#1a1405,#b08800)">🍳</div>
+            <div class="tg-item-text">
+              <div class="tg-item-name">Culinary Decoder</div>
+              <div class="tg-item-prev">Recipe extracted!</div>
+            </div>
+            <div class="tg-item-time">12m</div>
+          </div>
+
         </div>
-        <div class="card-info">
-          <div class="card-name">Language Learning</div>
-          <div class="card-desc">Learn any language by reading and understanding — contextual learning built around real content.</div>
-        </div>
-        <a class="card-btn" href="https://enti.space/lang" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Open App
-        </a>
       </div>
 
+      <!-- Chat panel -->
+      <div class="tg-chat">
+        <div class="tg-chat-header">
+          <div class="tg-chat-av" id="chat-av" style="background:linear-gradient(135deg,#0d2440,#1a6ea8)">✦</div>
+          <div>
+            <div class="tg-chat-name" id="chat-name">Brevitas</div>
+            <div class="tg-chat-sub">bot</div>
+          </div>
+          <a class="tg-open-btn" id="chat-link" href="https://t.me/brevitas_info_bot" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="tg-messages" id="tg-messages"></div>
+        <div class="tg-input-bar">
+          <div class="tg-input">Message</div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-</div>
+<div class="divider"></div>
 
-<footer>
-  <p>Made by Dmitriy Kegeles &nbsp;·&nbsp; 2026</p>
-</footer>
+<!-- ── WEB SECTION ── -->
+<section class="section section--web">
+  <div class="section-hd">
+    <span class="tag">Web</span>
+    <h2>Web Tools</h2>
+  </div>
+  <a class="web-card" href="https://enti.space/lang" target="_blank" rel="noopener">
+    <div class="web-icon">🌐</div>
+    <div class="web-info">
+      <div class="web-name">Language Learning</div>
+      <div class="web-desc">Learn any language by reading real content — contextual vocabulary acquisition, no flashcards.</div>
+      <span class="web-badge">Web App</span>
+    </div>
+    <span style="color:var(--muted);font-size:1.1rem;flex-shrink:0">→</span>
+  </a>
+</section>
 
+<footer>Made by Dmitriy Kegeles &nbsp;·&nbsp; 2026</footer>
+
+<script>
+  const BOTS = {
+    brevitas: {
+      name:'Brevitas', av:'✦', avBg:'linear-gradient(135deg,#0d2440,#1a6ea8)',
+      url:'https://t.me/brevitas_info_bot',
+      msgs:[
+        {t:'bot',  m:'Hello! Send me any article URL, video, or document and I\'ll give you an instant AI-powered summary.'},
+        {t:'user', m:'https://techcrunch.com/2026/04/ai-regulation'},
+        {t:'bot',  m:'✨ Summary ready!\n\n📌 Key takeaways:\n• EU AI Act enforcement begins Q3\n• Open-source models get exemptions\n• Fines up to 3% of global revenue\n\n[8 min read → 25 sec summary]'},
+      ]
+    },
+    calendar: {
+      name:'Photo to Calendar', av:'📅', avBg:'linear-gradient(135deg,#261505,#c87800)',
+      url:'https://t.me/calendar_event_with_ai_bot',
+      msgs:[
+        {t:'bot',  m:'Send me a photo of any event — flyer, poster, invite — and I\'ll create a calendar event from it instantly.'},
+        {t:'user', m:'[photo of concert flyer]'},
+        {t:'bot',  m:'📅 Event detected!\n\n🎵 Floating Points — Live\n📍 Barbican Centre, London\n🗓 May 22, 2026 · 8:00 PM\n\n[Add to Google Calendar] [Add to Apple Calendar]'},
+      ]
+    },
+    downloader: {
+      name:'Video Downloader', av:'⬇', avBg:'linear-gradient(135deg,#1a0808,#b02020)',
+      url:'https://t.me/downloader_inf_bot',
+      msgs:[
+        {t:'bot',  m:'Send me any video link — YouTube, Instagram, TikTok, X — and I\'ll download and send it back to you.'},
+        {t:'user', m:'https://youtube.com/watch?v=dQw4w9WgXcQ'},
+        {t:'bot',  m:'⬇ Downloaded!\n\nRick Astley — Never Gonna Give You Up\n📦 1080p · 43 MB\n\n[Video file ↓]'},
+      ]
+    },
+    culinary: {
+      name:'Culinary Decoder', av:'🍳', avBg:'linear-gradient(135deg,#1a1405,#b08800)',
+      url:'https://t.me/recipe_sm_vi_bot',
+      msgs:[
+        {t:'bot',  m:'Send me a cooking reel or video link and I\'ll extract the full structured recipe for you.'},
+        {t:'user', m:'https://instagram.com/reel/abc123xyz'},
+        {t:'bot',  m:'👨‍🍳 Cacio e Pepe\n\nIngredients:\n• 200g spaghetti\n• 80g Pecorino Romano\n• 2 tsp cracked black pepper\n• Salt\n\nSteps:\n1. Cook pasta al dente, reserve 1 cup water\n2. Toast pepper in dry pan 1 min\n3. Mix cheese + pepper + pasta water into emulsion...'},
+      ]
+    }
+  };
+
+  function renderMsgs(id) {
+    const box = document.getElementById('tg-messages');
+    box.innerHTML = '';
+    BOTS[id].msgs.forEach(({t, m}) => {
+      const d = document.createElement('div');
+      d.className = 'msg ' + (t === 'bot' ? 'msg-bot' : 'msg-user');
+      d.textContent = m;
+      box.appendChild(d);
+    });
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function selectBot(id, el) {
+    document.querySelectorAll('.tg-item').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    const b = BOTS[id];
+    document.getElementById('chat-av').style.background = b.avBg;
+    document.getElementById('chat-av').textContent = b.av;
+    document.getElementById('chat-name').textContent = b.name;
+    document.getElementById('chat-link').href = b.url;
+    renderMsgs(id);
+  }
+
+  renderMsgs('brevitas');
+</script>
 </body>
 </html>
