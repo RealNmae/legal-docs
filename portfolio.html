@@ -31,7 +31,7 @@
     header {
       position:relative; z-index:10;
       text-align:center;
-      padding: 72px 24px 56px;
+      padding: 52px 24px 36px;
     }
     .avatar {
       width:82px; height:82px; border-radius:50%; overflow:hidden;
@@ -43,8 +43,8 @@
     header p  { color:var(--muted); font-size:1rem; line-height:1.65; max-width:400px; margin:0 auto; }
 
     /* SECTION */
-    .section { position:relative; z-index:1; padding:80px 24px 96px; }
-    .section-hd { text-align:center; margin-bottom:56px; }
+    .section { position:relative; z-index:1; padding:48px 24px 56px; }
+    .section-hd { text-align:center; margin-bottom:36px; }
     .tag {
       display:inline-flex; align-items:center; gap:6px;
       font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
@@ -56,7 +56,7 @@
     /* DIVIDER */
     .divider {
       position:relative; z-index:1;
-      width:1px; height:60px;
+      width:1px; height:32px;
       background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent);
       margin:0 auto;
     }
@@ -88,14 +88,14 @@
     .phone-wrap.pw-center { transform:rotate(-4deg)  translate(-42px,7px);   z-index:2; filter:brightness(.8); }
     .phone-wrap.pw-right  { transform:rotate(6deg)   translate(92px,0);      z-index:3; filter:brightness(1); }
 
-    .phone-wrap.pw-left:hover   { transform:rotate(-13deg) translate(-165px,4px);  filter:brightness(.93) !important; z-index:10; }
-    .phone-wrap.pw-center:hover { transform:rotate(-4deg)  translate(-42px,-8px);  filter:brightness(.97) !important; z-index:10; }
-    .phone-wrap.pw-right:hover  { transform:rotate(6deg)   translate(92px,-8px);   filter:brightness(1)   !important; z-index:10; }
+    /* neon glow per app — hover OR .lift (triggered by App Store button hover) */
+    .phone-wrap.pw-left:hover,   .phone-wrap.pw-left.lift   { transform:rotate(-13deg) translate(-165px,4px);  filter:brightness(.93); z-index:10; }
+    .phone-wrap.pw-center:hover, .phone-wrap.pw-center.lift { transform:rotate(-4deg)  translate(-42px,-8px);  filter:brightness(.97); z-index:10; }
+    .phone-wrap.pw-right:hover,  .phone-wrap.pw-right.lift  { transform:rotate(6deg)   translate(92px,-8px);   filter:brightness(1);   z-index:10; }
 
-    /* neon glow per app */
-    .phone-wrap.pw-left:hover   .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(93,187,143,.45),  0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(93,187,143,.18); }
-    .phone-wrap.pw-center:hover .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(156,45,255,.55),  0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(156,45,255,.22); }
-    .phone-wrap.pw-right:hover  .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(0,255,149,.45),   0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(0,255,149,.16); }
+    .phone-wrap.pw-left:hover   .phone, .phone-wrap.pw-left.lift   .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(93,187,143,.45),  0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(93,187,143,.18); }
+    .phone-wrap.pw-center:hover .phone, .phone-wrap.pw-center.lift .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(156,45,255,.55),  0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(156,45,255,.22); }
+    .phone-wrap.pw-right:hover  .phone, .phone-wrap.pw-right.lift  .phone { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 0 0 2px rgba(0,255,149,.45),   0 40px 80px rgba(0,0,0,.75), 0 0 60px rgba(0,255,149,.16); }
 
     /* Phone frame */
     .phone {
@@ -124,32 +124,12 @@
       width:88px; height:4px; background:rgba(255,255,255,.22); border-radius:2px; z-index:10;
     }
 
-    .phone-screen {
+    /* full-bleed screenshot fills the phone screen */
+    .phone-screenshot {
       position:absolute; inset:0;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:9px; padding:48px 14px 36px;
+      width:100%; height:100%;
+      object-fit:cover; object-position:top center;
     }
-    /* placeholder screenshot label */
-    .phone-screen-placeholder {
-      position:absolute; inset:0;
-      display:flex; align-items:flex-end; justify-content:center;
-      padding-bottom:56px; pointer-events:none;
-    }
-    .phone-screen-placeholder span {
-      font-size:9px; letter-spacing:.08em; text-transform:uppercase;
-      color:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.08);
-      padding:2px 8px; border-radius:8px;
-    }
-
-    /* screen bg per app */
-    .bg-itero    { background: radial-gradient(circle at 50% 32%, rgba(93,187,143,.15) 0%, transparent 55%), linear-gradient(175deg,#05100c 0%,#020808 100%); }
-    .bg-gyrosumo { background: radial-gradient(circle at 50% 32%, rgba(156,45,255,.18) 0%, transparent 55%), linear-gradient(175deg,#0e0518 0%,#060010 100%); }
-    .bg-serpent  { background: radial-gradient(circle at 50% 32%, rgba(0,255,149,.12) 0%, transparent 55%), linear-gradient(175deg,#081208 0%,#020804 100%); }
-
-    .phone-icon { width:72px; height:72px; border-radius:18px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.55); flex-shrink:0; }
-    .phone-icon img { width:100%; height:100%; object-fit:cover; }
-    .phone-app-name { font-size:14px; font-weight:600; color:#fff; }
-    .phone-app-tag  { font-size:10px; color:rgba(255,255,255,.44); line-height:1.45; text-align:center; }
 
     /* App Store row below phones */
     .as-row {
@@ -366,12 +346,7 @@
     <div class="phone-wrap pw-left" onclick="window.location.href='itero_landing.html'" title="Itero — tap to explore">
       <div class="phone">
         <div class="phone-island"></div>
-        <div class="phone-screen bg-itero">
-          <div class="phone-icon"><img src="assets/IteroIcon.png" alt="Itero"/></div>
-          <div class="phone-app-name">Itero</div>
-          <div class="phone-app-tag">Live the path.<br/>Itero remembers the rest.</div>
-        </div>
-        <div class="phone-screen-placeholder"><span>screenshot coming soon</span></div>
+        <img class="phone-screenshot" src="assets/itero_screen.png" alt="Itero app screenshot"/>
         <div class="phone-home"></div>
       </div>
     </div>
@@ -380,12 +355,7 @@
     <div class="phone-wrap pw-center" onclick="window.location.href='gyrosumo_landing.html'" title="GyroSumo — tap to explore">
       <div class="phone">
         <div class="phone-island"></div>
-        <div class="phone-screen bg-gyrosumo">
-          <div class="phone-icon"><img src="assets/gyroSumoIcon.png" alt="GyroSumo"/></div>
-          <div class="phone-app-name">GyroSumo</div>
-          <div class="phone-app-tag">A shared experiment<br/>in physical presence.</div>
-        </div>
-        <div class="phone-screen-placeholder"><span>screenshot coming soon</span></div>
+        <img class="phone-screenshot" src="assets/gyroSumo_screen.png" alt="GyroSumo app screenshot"/>
         <div class="phone-home"></div>
       </div>
     </div>
@@ -394,12 +364,7 @@
     <div class="phone-wrap pw-right" onclick="window.location.href='serpentfeel.html'" title="SerpentFeel — tap to explore">
       <div class="phone">
         <div class="phone-island"></div>
-        <div class="phone-screen bg-serpent">
-          <div class="phone-icon"><img src="assets/SerpentFeelIcon.png" alt="SerpentFeel"/></div>
-          <div class="phone-app-name">SerpentFeel</div>
-          <div class="phone-app-tag">Hold it. Tilt.<br/>Listen.</div>
-        </div>
-        <div class="phone-screen-placeholder"><span>screenshot coming soon</span></div>
+        <img class="phone-screenshot" src="assets/serpentfeel_screen.png" alt="SerpentFeel app screenshot"/>
         <div class="phone-home"></div>
       </div>
     </div>
@@ -408,15 +373,15 @@
 
   <!-- App Store buttons -->
   <div class="as-row">
-    <a class="as-btn" href="https://apps.apple.com/us/app/itero-private-tracker/id6760823720" target="_blank" rel="noopener">
+    <a class="as-btn" data-app="itero" href="https://apps.apple.com/us/app/itero-private-tracker/id6760823720" target="_blank" rel="noopener">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
       Itero
     </a>
-    <a class="as-btn" href="https://apps.apple.com/il/app/gyrosumo/id6761440527" target="_blank" rel="noopener">
+    <a class="as-btn" data-app="gyrosumo" href="https://apps.apple.com/il/app/gyrosumo/id6761440527" target="_blank" rel="noopener">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
       GyroSumo
     </a>
-    <a class="as-btn" href="https://apps.apple.com/us/app/serpentfeel/id6760789879" target="_blank" rel="noopener">
+    <a class="as-btn" data-app="serpentfeel" href="https://apps.apple.com/us/app/serpentfeel/id6760789879" target="_blank" rel="noopener">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
       SerpentFeel
     </a>
@@ -453,7 +418,7 @@
         <div class="tg-list">
 
           <div class="tg-item active" onclick="selectBot('brevitas',this)">
-            <div class="tg-av" style="background:linear-gradient(135deg,#0d2440,#1a6ea8)">✦</div>
+            <div class="tg-av"><img src="assets/brevitas_icon.png" alt="Brevitas" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
             <div class="tg-item-text">
               <div class="tg-item-name">Brevitas</div>
               <div class="tg-item-prev">Here's your summary...</div>
@@ -462,7 +427,7 @@
           </div>
 
           <div class="tg-item" onclick="selectBot('calendar',this)">
-            <div class="tg-av" style="background:linear-gradient(135deg,#261505,#c87800)">📅</div>
+            <div class="tg-av"><img src="assets/calendar_event_bot_icon.jpg" alt="Photo to Calendar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
             <div class="tg-item-text">
               <div class="tg-item-name">Photo to Calendar</div>
               <div class="tg-item-prev">Event created ✓</div>
@@ -471,7 +436,7 @@
           </div>
 
           <div class="tg-item" onclick="selectBot('downloader',this)">
-            <div class="tg-av" style="background:linear-gradient(135deg,#1a0808,#b02020)">⬇</div>
+            <div class="tg-av"><img src="assets/downloader_bot_icon.png" alt="Video Downloader" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
             <div class="tg-item-text">
               <div class="tg-item-name">Video Downloader</div>
               <div class="tg-item-prev">Here's your file ↓</div>
@@ -480,7 +445,7 @@
           </div>
 
           <div class="tg-item" onclick="selectBot('culinary',this)">
-            <div class="tg-av" style="background:linear-gradient(135deg,#1a1405,#b08800)">🍳</div>
+            <div class="tg-av"><img src="assets/recipe_bot_icon.jpg" alt="Culinary Decoder" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
             <div class="tg-item-text">
               <div class="tg-item-name">Culinary Decoder</div>
               <div class="tg-item-prev">Recipe extracted!</div>
@@ -494,7 +459,7 @@
       <!-- Chat panel -->
       <div class="tg-chat">
         <div class="tg-chat-header">
-          <div class="tg-chat-av" id="chat-av" style="background:linear-gradient(135deg,#0d2440,#1a6ea8)">✦</div>
+          <div class="tg-chat-av" id="chat-av"><img id="chat-av-img" src="assets/brevitas_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
           <div>
             <div class="tg-chat-name" id="chat-name">Brevitas</div>
             <div class="tg-chat-sub">bot</div>
@@ -534,7 +499,7 @@
 <script>
   const BOTS = {
     brevitas: {
-      name:'Brevitas', av:'✦', avBg:'linear-gradient(135deg,#0d2440,#1a6ea8)',
+      name:'Brevitas', icon:'assets/brevitas_icon.png',
       url:'https://t.me/brevitas_info_bot',
       msgs:[
         {t:'bot',  m:'Hello! Send me any article URL, video, or document and I\'ll give you an instant AI-powered summary.'},
@@ -543,7 +508,7 @@
       ]
     },
     calendar: {
-      name:'Photo to Calendar', av:'📅', avBg:'linear-gradient(135deg,#261505,#c87800)',
+      name:'Photo to Calendar', icon:'assets/calendar_event_bot_icon.jpg',
       url:'https://t.me/calendar_event_with_ai_bot',
       msgs:[
         {t:'bot',  m:'Send me a photo of any event — flyer, poster, invite — and I\'ll create a calendar event from it instantly.'},
@@ -552,7 +517,7 @@
       ]
     },
     downloader: {
-      name:'Video Downloader', av:'⬇', avBg:'linear-gradient(135deg,#1a0808,#b02020)',
+      name:'Video Downloader', icon:'assets/downloader_bot_icon.png',
       url:'https://t.me/downloader_inf_bot',
       msgs:[
         {t:'bot',  m:'Send me any video link — YouTube, Instagram, TikTok, X — and I\'ll download and send it back to you.'},
@@ -561,7 +526,7 @@
       ]
     },
     culinary: {
-      name:'Culinary Decoder', av:'🍳', avBg:'linear-gradient(135deg,#1a1405,#b08800)',
+      name:'Culinary Decoder', icon:'assets/recipe_bot_icon.jpg',
       url:'https://t.me/recipe_sm_vi_bot',
       msgs:[
         {t:'bot',  m:'Send me a cooking reel or video link and I\'ll extract the full structured recipe for you.'},
@@ -587,14 +552,22 @@
     document.querySelectorAll('.tg-item').forEach(e => e.classList.remove('active'));
     el.classList.add('active');
     const b = BOTS[id];
-    document.getElementById('chat-av').style.background = b.avBg;
-    document.getElementById('chat-av').textContent = b.av;
+    document.getElementById('chat-av-img').src = b.icon;
     document.getElementById('chat-name').textContent = b.name;
     document.getElementById('chat-link').href = b.url;
     renderMsgs(id);
   }
 
   renderMsgs('brevitas');
+
+  // App Store buttons lift their corresponding phone on hover
+  const phoneMap = { itero:'pw-left', gyrosumo:'pw-center', serpentfeel:'pw-right' };
+  document.querySelectorAll('.as-btn[data-app]').forEach(btn => {
+    const phone = document.querySelector('.phone-wrap.' + phoneMap[btn.dataset.app]);
+    if (!phone) return;
+    btn.addEventListener('mouseenter', () => phone.classList.add('lift'));
+    btn.addEventListener('mouseleave', () => phone.classList.remove('lift'));
+  });
 </script>
 </body>
 </html>
