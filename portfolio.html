@@ -230,6 +230,16 @@
     .tg-chat-av { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; overflow:hidden; }
     .tg-chat-name { font-size:14px; font-weight:600; color:#111; }
     .tg-chat-sub  { font-size:11px; color:#8c9aa3; }
+    .tg-back {
+      display:none;
+      width:34px; height:34px; border-radius:50%;
+      background:rgba(255,255,255,.92);
+      box-shadow:0 1px 4px rgba(0,0,0,.18);
+      border:none; cursor:pointer;
+      align-items:center; justify-content:center;
+      color:#111; font-size:20px; line-height:1;
+      flex-shrink:0; padding-right:2px;
+    }
     .tg-open-btn {
       margin-left:auto;
       display:inline-flex; align-items:center; gap:5px;
@@ -401,9 +411,20 @@
       .phone-wrap.pw-left:hover   { transform:rotate(-13deg) translate(-132px,2px); }
       .phone-wrap.pw-center:hover { transform:rotate(-4deg)  translate(-32px,-6px); }
       .phone-wrap.pw-right:hover  { transform:rotate(6deg)   translate(76px,-6px); }
-      .tg-window { height:360px; }
-      .tg-sidebar { width:180px; }
-      .tg-item-name { font-size:12px; }
+      /* Mobile Telegram: full-width list → chat navigation */
+      .tg-window { height:auto; min-height:360px; }
+      .tg-sidebar { width:100%; border-right:none; }
+      .tg-chat { display:none; height:480px; }
+      .tg-window.mobile-chat .tg-sidebar { display:none; }
+      .tg-window.mobile-chat .tg-chat { display:flex; }
+      /* larger list items on mobile */
+      .tg-item { padding:12px 14px; }
+      .tg-av { width:54px; height:54px; }
+      .tg-item-name { font-size:15px; }
+      .tg-item-prev { font-size:13px; color:#999; }
+      .tg-item-time { font-size:12px; }
+      /* back button */
+      .tg-back { display:flex !important; }
     }
   </style>
 </head>
@@ -430,7 +451,7 @@
   <div class="phones-scene">
 
     <!-- Itero — back left -->
-    <div class="phone-wrap pw-left" onclick="window.location.href='itero_landing.html'" title="Itero — tap to explore">
+    <div class="phone-wrap pw-left" data-phone="itero" onclick="handlePhoneClick('itero','itero_landing.html')">
       <div class="phone">
         <div class="phone-island"></div>
         <img class="phone-screenshot" src="assets/itero_screen.png" alt="Itero app screenshot"/>
@@ -439,7 +460,7 @@
     </div>
 
     <!-- GyroSumo — center -->
-    <div class="phone-wrap pw-center" onclick="window.location.href='gyrosumo_landing.html'" title="GyroSumo — tap to explore">
+    <div class="phone-wrap pw-center" data-phone="gyrosumo" onclick="handlePhoneClick('gyrosumo','gyrosumo_landing.html')">
       <div class="phone">
         <div class="phone-island"></div>
         <img class="phone-screenshot" src="assets/gyroSumo_screen.png" alt="GyroSumo app screenshot"/>
@@ -448,7 +469,7 @@
     </div>
 
     <!-- SerpentFeel — front right -->
-    <div class="phone-wrap pw-right" onclick="window.location.href='serpentfeel.html'" title="SerpentFeel — tap to explore">
+    <div class="phone-wrap pw-right" data-phone="serpentfeel" onclick="handlePhoneClick('serpentfeel','serpentfeel.html')">
       <div class="phone">
         <div class="phone-island"></div>
         <img class="phone-screenshot" src="assets/serpentfeel_screen.png" alt="SerpentFeel app screenshot"/>
@@ -546,6 +567,7 @@
       <!-- Chat panel -->
       <div class="tg-chat">
         <div class="tg-chat-header">
+          <button class="tg-back" id="tg-back">‹</button>
           <div class="tg-chat-av" id="chat-av"><img id="chat-av-img" src="assets/brevitas_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
           <div>
             <div class="tg-chat-name" id="chat-name">Brevitas</div>
@@ -574,7 +596,7 @@
     <div class="web-icon" style="font-family:system-ui;font-size:15px;font-weight:700;letter-spacing:-1px;color:#3a7bd5;background:linear-gradient(135deg,#eef4ff,#ddeeff)">ʌaнг</div>
     <div class="web-info">
       <div class="web-name">лангуаge</div>
-      <div class="web-desc">Read anything in any language — tap any word for instant translation and explanation. Camera, text, and history modes.</div>
+      <div class="web-desc">Learn any language by reading — tap any word for instant translation and explanation. Camera, text, and history modes.</div>
       <span class="web-badge">Web App</span>
     </div>
     <span style="color:var(--muted);font-size:1.1rem;flex-shrink:0">→</span>
@@ -670,17 +692,40 @@
     document.getElementById('chat-name').textContent = b.name;
     document.getElementById('chat-link').href = b.url;
     renderMsgs(id);
+    // mobile: switch to chat view
+    if (window.innerWidth <= 640) {
+      document.querySelector('.tg-window').classList.add('mobile-chat');
+    }
   }
+
+  document.getElementById('tg-back').addEventListener('click', () => {
+    document.querySelector('.tg-window').classList.remove('mobile-chat');
+  });
 
   renderMsgs('brevitas');
 
-  // App Store buttons lift their corresponding phone on hover
-  const phoneMap = { itero:'pw-left', gyrosumo:'pw-center', serpentfeel:'pw-right' };
+  // Mobile: tap to select (lift), tap selected again to navigate
+  let activeMobilePhone = 'serpentfeel';
+
+  function handlePhoneClick(id, href) {
+    if (window.innerWidth > 640) {
+      window.location.href = href;
+      return;
+    }
+    if (activeMobilePhone === id) {
+      window.location.href = href;
+    } else {
+      document.querySelectorAll('.phone-wrap[data-phone]').forEach(el => el.classList.remove('lift'));
+      document.querySelector(`.phone-wrap[data-phone="${id}"]`).classList.add('lift');
+      activeMobilePhone = id;
+    }
+  }
+
+  // App Store buttons lift their corresponding phone on hover (desktop only)
   document.querySelectorAll('.as-btn[data-app]').forEach(btn => {
-    const phone = document.querySelector('.phone-wrap.' + phoneMap[btn.dataset.app]);
-    if (!phone) return;
-    btn.addEventListener('mouseenter', () => phone.classList.add('lift'));
-    btn.addEventListener('mouseleave', () => phone.classList.remove('lift'));
+    const phone = () => document.querySelector(`.phone-wrap[data-phone="${btn.dataset.app}"]`);
+    btn.addEventListener('mouseenter', () => phone()?.classList.add('lift'));
+    btn.addEventListener('mouseleave', () => phone()?.classList.remove('lift'));
   });
 </script>
 </body>
