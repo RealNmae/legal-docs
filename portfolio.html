@@ -355,9 +355,19 @@
     }
     .tg-input {
       flex:1; background:#fff; border-radius:22px;
-      padding:6px 14px; font-size:12px; color:#aaa;
-      border:1px solid rgba(0,0,0,.08);
+      padding:6px 14px; font-size:12px; color:#333;
+      border:1px solid rgba(0,0,0,.08); outline:none;
+      font-family:inherit;
     }
+    .tg-input::placeholder { color:#aaa; }
+    .tg-send-btn {
+      width:34px; height:34px; border-radius:50%;
+      background:#2AABEE; border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; transition:background .15s;
+    }
+    .tg-send-btn:hover { background:#1a9bde; }
+    .tg-send-btn svg { width:16px; height:16px; fill:#fff; }
 
     /* ═══════════════════════════════════════
        WEB SECTION
@@ -577,7 +587,10 @@
         </div>
         <div class="tg-messages" id="tg-messages"></div>
         <div class="tg-input-bar">
-          <div class="tg-input">Message</div>
+          <input class="tg-input" id="tg-input-field" type="text" placeholder="Message" autocomplete="off">
+          <button class="tg-send-btn" id="tg-send-btn" title="Send">
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -726,6 +739,22 @@
     const phone = () => document.querySelector(`.phone-wrap[data-phone="${btn.dataset.app}"]`);
     btn.addEventListener('mouseenter', () => phone()?.classList.add('lift'));
     btn.addEventListener('mouseleave', () => phone()?.classList.remove('lift'));
+  });
+
+  // Telegram input send
+  function tgSend() {
+    const input = document.getElementById('tg-input-field');
+    const text = input.value.trim();
+    const url = document.getElementById('chat-link').href;
+    if (!text) { window.open(url, '_blank'); return; }
+    // tg:// deep link opens the bot with pre-filled text on mobile/desktop app
+    const domain = url.replace('https://t.me/', '');
+    window.open(`tg://resolve?domain=${domain}&text=${encodeURIComponent(text)}`, '_blank');
+    input.value = '';
+  }
+  document.getElementById('tg-send-btn').addEventListener('click', tgSend);
+  document.getElementById('tg-input-field').addEventListener('keydown', e => {
+    if (e.key === 'Enter') tgSend();
   });
 </script>
 </body>
