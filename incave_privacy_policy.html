@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Incave – Privacy Policy</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      line-height: 1.7;
+      padding: 0 16px 64px;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding-top: 56px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #3b82f620;
+      border: 1px solid #3b82f640;
+      border-radius: 99px;
+      padding: 4px 14px;
+      font-size: 13px;
+      color: #93c5fd;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #8b949e;
+      font-size: 16px;
+      margin-bottom: 48px;
+    }
+
+    .updated {
+      font-size: 13px;
+      color: #484f58;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      margin-top: 40px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 .icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: #3b82f6;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    p { color: #8b949e; margin-bottom: 12px; }
+
+    ul {
+      color: #8b949e;
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    ul li { margin-bottom: 6px; }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 40px;
+    }
+
+    .card h2 { margin-top: 0; }
+
+    .highlight {
+      background: #3b82f610;
+      border: 1px solid #3b82f630;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #93c5fd;
+      font-size: 14px;
+    }
+
+    a { color: #3b82f6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    hr {
+      border: none;
+      border-top: 1px solid #21262d;
+      margin: 48px 0 32px;
+    }
+
+    .footer {
+      font-size: 13px;
+      color: #484f58;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="badge">📄 Legal</div>
+    <h1>Privacy Policy</h1>
+    <p class="subtitle">Incave — Spatial Audio AR</p>
+    <p class="updated">Last updated: April 2026</p>
+
+    <div class="highlight">
+      Short version: Incave does not collect personal information, does not share your data with third parties, and all your audio files stay on your device.
+    </div>
+
+    <!-- Camera & Microphone -->
+    <h2><span class="icon">📷</span> Camera &amp; Microphone</h2>
+    <p>Incave uses your device camera exclusively to power ARKit — mapping your environment and tracking your position in real time. The microphone is accessed by the audio engine required to play spatial sound through your device speakers.</p>
+    <p><strong style="color:#e6edf3;">Neither camera nor microphone data is ever recorded, stored, or transmitted.</strong> All processing happens on-device in real time.</p>
+
+    <!-- Audio Files -->
+    <h2><span class="icon">🎵</span> Audio Files You Import</h2>
+    <p>When you import audio files into Incave (via the Files app, share sheet, or in-app picker), they are saved to your device's local storage only. They are never uploaded to any server or shared with anyone.</p>
+    <p>You can delete imported files at any time by swiping left on them in the "Your Sounds" list.</p>
+
+    <!-- Zone Data -->
+    <h2><span class="icon">📍</span> Zone Data</h2>
+    <p>Spatial audio zones you create (position, radius, assigned sound) are stored locally on your device using iOS standard storage. This data is not synced to any cloud service and is deleted when you reset the app or uninstall it.</p>
+
+    <!-- Analytics -->
+    <div class="card">
+      <h2><span class="icon">📊</span> Anonymous Analytics</h2>
+      <p>Incave uses <a href="https://telemetrydeck.com" target="_blank">TelemetryDeck</a> to collect basic, anonymous usage signals — for example, that a zone was created or a sound was imported. This helps understand how the app is used and improve it over time.</p>
+      <p>TelemetryDeck is designed to be <strong style="color:#e6edf3;">privacy-first</strong>:</p>
+      <ul>
+        <li>No personally identifiable information is collected.</li>
+        <li>Signals are hashed and cannot be traced back to you.</li>
+        <li>No advertising identifiers (IDFA) are used.</li>
+        <li>Data is stored on servers in the European Union.</li>
+        <li>TelemetryDeck is GDPR and CCPA compliant.</li>
+      </ul>
+      <p>You can read TelemetryDeck's own privacy policy at <a href="https://telemetrydeck.com/privacy" target="_blank">telemetrydeck.com/privacy</a>.</p>
+    </div>
+
+    <!-- Third Parties -->
+    <h2><span class="icon">🤝</span> Third-Party Sharing</h2>
+    <p>Incave does not sell, rent, or share your data with any third parties for advertising or commercial purposes. The only third-party service used is TelemetryDeck for anonymous analytics, described above.</p>
+
+    <!-- Children -->
+    <h2><span class="icon">👶</span> Children's Privacy</h2>
+    <p>Incave does not knowingly collect any information from children under 13. The app does not contain any features directed at children and does not collect personal data from any user.</p>
+
+    <!-- Changes -->
+    <h2><span class="icon">🔄</span> Changes to This Policy</h2>
+    <p>If this privacy policy changes in a material way, the updated version will be posted here with a new date. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+
+    <!-- Contact -->
+    <h2><span class="icon">✉️</span> Contact</h2>
+    <p>Questions or concerns about this privacy policy? Reach out at:</p>
+    <p><a href="mailto:entispt@gmail.com">entispt@gmail.com</a></p>
+
+    <hr />
+
+    <p class="footer">© 2026 Dmitriy Kegeles · Incave</p>
+
+  </div>
+</body>
+</html>
