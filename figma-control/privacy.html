@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Figma Control Privacy Policy</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101217;
+      --panel: #151820;
+      --text: #f2f3f5;
+      --muted: #a6aab3;
+      --line: #2a2f3a;
+      --accent: #b85cff;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    h1, h2 {
+      line-height: 1.15;
+    }
+    h1 {
+      font-size: 42px;
+      margin: 0 0 12px;
+    }
+    h2 {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    p, li {
+      color: var(--muted);
+    }
+    strong {
+      color: var(--text);
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Figma Control Privacy Policy</h1>
+    <p>Effective date: June 3, 2026</p>
+
+    <section class="panel">
+      <strong>Summary</strong>
+      <p>Figma Control does not collect, sell, rent, share, or transmit personal data to the developer or third parties.</p>
+    </section>
+
+    <h2>Local Data</h2>
+    <p>The app stores configuration locally on the user's Mac. This configuration can include controller mappings, plugin command names, hotkey assignments, LED colors, Bluetooth device names, USB serial port patterns, and local WebSocket settings.</p>
+    <p>The app also keeps a short in-memory event log for diagnostics. A diagnostic file is created only when the user explicitly chooses Export Logs.</p>
+
+    <h2>Bluetooth</h2>
+    <p>The app uses Bluetooth to scan for and connect to the user's custom encoder and keypad controllers. Bluetooth data is used only for local controller communication.</p>
+
+    <h2>USB Serial</h2>
+    <p>The app can read a local USB serial port when the user enables legacy wired-controller support. USB serial data is used only for local controller communication and is not sent to the developer or third parties.</p>
+
+    <h2>Local Network</h2>
+    <p>The app runs a local WebSocket server on the Mac so the Figma plugin can receive user-configured controller commands. This local server is intended for same-device workflow communication.</p>
+
+    <h2>Automation And Accessibility</h2>
+    <p>When enabled by the user, the app uses macOS Automation and Accessibility permissions to activate Figma, open the configured plugin menu item, send user-configured hotkeys, and read modifier key state for Shift/Cmd layer behavior.</p>
+    <p>The app does not record typed text.</p>
+
+    <h2>Third-Party Services</h2>
+    <p>The app does not include advertising, analytics SDKs, tracking SDKs, or third-party data collection services.</p>
+
+    <h2>Contact</h2>
+    <p>Before App Store submission, replace this text with a public privacy contact email or support form URL.</p>
+  </main>
+</body>
+</html>
